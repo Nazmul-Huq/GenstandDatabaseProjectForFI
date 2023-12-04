@@ -2,9 +2,11 @@ using GenstandDatabaseProjectForFI.Client.Pages;
 using GenstandDatabaseProjectForFI.Components;
 using GenstandDatabaseProjectForFI.Components.Account;
 using GenstandDatabaseProjectForFI.Data;
+using GenstandDatabaseProjectForFI.Repositories;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using SharedLibrary.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,13 +19,14 @@ builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();
 builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
-
+builder.Services.AddControllers();
 builder.Services.AddAuthentication(options =>
     {
         options.DefaultScheme = IdentityConstants.ApplicationScheme;
         options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
     })
     .AddIdentityCookies();
+builder.Services.AddScoped<IGenstandOperations, GenstandRepository>();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -53,7 +56,7 @@ else
 }
 
 app.UseHttpsRedirection();
-
+app.MapControllers();
 app.UseStaticFiles();
 app.UseAntiforgery();
 
