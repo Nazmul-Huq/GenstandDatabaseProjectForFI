@@ -1,0 +1,47 @@
+﻿@page "/add-genstand"
+@rendermode InteractiveAuto
+
+
+<h3>AddGenstand</h3>
+
+<div>
+    <EditForm Model="GenstandModel" OnValidSubmit="HandleSave">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="form-group">
+            <label class="form-label">Genstand Name</label>
+            <InputText @bind-Value="GenstandModel.Name" class="form-control"></InputText>
+            <ValidationMessage For="()=>GenstandModel.Name"></ValidationMessage>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Genstand Description</label>
+            <InputText @bind-Value="GenstandModel.Description" class="form-control"></InputText>
+            <ValidationMessage For="()=>GenstandModel.Description"></ValidationMessage>
+        </div>
+
+        <button type="submit" class="btn btn-primary"> Save</button>
+    </EditForm>
+</div>
+@code {
+    public Genstand GenstandModel { get; set; } = new();
+
+    public Genstand GenstandReturn = new();
+
+    private async Task HandleSave()
+    {
+        // if (ProductModel.Id > 0)
+        // {
+        //     ReturnProduct = await ProductService.UpdateProductAsync(ProductModel);
+        //     ProductModel = new();
+        // }
+
+        // else
+        {
+            GenstandReturn = await GenstandService.AddProductAsync(GenstandModel);
+            GenstandReturn = new();
+
+        }
+
+    }
+
+}

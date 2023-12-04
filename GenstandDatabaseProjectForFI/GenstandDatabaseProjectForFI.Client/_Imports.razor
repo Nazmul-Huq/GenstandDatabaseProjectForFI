@@ -8,3 +8,9 @@
 @using Microsoft.AspNetCore.Components.Web.Virtualization
 @using Microsoft.JSInterop
 @using GenstandDatabaseProjectForFI.Client
+@using SharedLibrary.Interfaces
+@using SharedLibrary.Models
+
+@inject IGenstandOperations GenstandService
+@inject NavigationManager NavigationManager
+@inject IJSRuntime IJSRuntime
