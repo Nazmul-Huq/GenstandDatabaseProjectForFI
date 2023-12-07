@@ -1,0 +1,89 @@
+﻿main {
+    display: flex;
+    text-align: center;
+    justify-content: center;
+}
+
+h1 {
+    padding-bottom: 5rem;
+    font-family: sans-serif;
+}
+
+.welcome-div {
+    padding-top: 5rem;
+}
+
+
+
+form {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    width: 20rem; /* Reduced width from 25rem to 20rem */
+    background: #9e9797;
+    border-radius: .7rem;
+}
+
+input, button {
+    height: 2rem;
+    font-family: 'Lato', sans-serif;
+    border: 0;
+    color: white;
+    font-size: 1.2rem;
+}
+
+    input[type="search"] {
+        outline: 0;
+        background: #9e9797;
+        padding: 0 1rem; /* Reduced padding for smaller input field */
+        font-size: 1.2rem; /* Smaller font size */
+        border-radius: .7rem;
+        appearance: none;
+        transition-property: width, border-radius;
+        z-index: 1;
+        position: relative;
+        width: 100%; /* Adjust this to manage the width of the search input */
+    }
+
+button {
+    display: none;
+    // prevent being able to tab to it position: absolute;
+    top: 0;
+    right: 0;
+    width: 2rem;
+    font-weight: bold;
+    background: #2f2f2f;
+    border-radius: 0.7rem .7rem 0;
+}
+
+input:not(:placeholder-shown) + button {
+    display: block;
+    width: 4rem; /* Smaller button width */
+}
+
+
+
+
+label {
+    position: absolute;
+    clip: rect(1px, 1px, 1px, 1px);
+    padding: 0;
+    border: 0;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+}
+
+
+/* In app.css */
+.home-page-logo img {
+    width: 10rem;
+    height: 10rem;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.home-page-logo {
+    padding-bottom: 3rem;
+}
