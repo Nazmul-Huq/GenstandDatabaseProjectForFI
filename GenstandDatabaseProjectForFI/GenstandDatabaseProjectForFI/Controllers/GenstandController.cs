@@ -15,7 +15,7 @@ namespace GenstandDatabaseProjectForFI.Controllers
             this.genstandOperations = genstandOperations;
         }
 
-        [HttpPost("Add-Product")]
+        [HttpPost("Add-Genstand")]
         public async Task<ActionResult<List<Genstand>>> AddProductAsync(Genstand model)
         {
             var product = await genstandOperations.AddProductAsync(model);

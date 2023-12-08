@@ -1,11 +1,11 @@
 ﻿@page "/add-genstand"
-@rendermode InteractiveAuto
+@* @rendermode InteractiveAuto *@
 
 
 <h3>AddGenstand</h3>
 
 <div>
-    <EditForm Model="@GenstandModel" OnValidSubmit="@HandleSave" FormName="AddGenstand">
+    <EditForm Model="@GenstandModel" OnValidSubmit="@HandleSave" FormName="addGenstand">
         <DataAnnotationsValidator />
         <ValidationSummary />
         <div class="form-group">
