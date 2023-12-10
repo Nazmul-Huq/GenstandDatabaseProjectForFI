@@ -38,7 +38,10 @@
 
         // else
         {
-            GenstandReturn = await GenstandService.AddProductAsync(GenstandModel);
+            //GenstandReturn = await GenstandService.AddGenstandAsync(GenstandModel);
+            var response = await httpClient.PostAsJsonAsync("api/Genstand/Add-Genstand", GenstandModel);
+            if (response is null) return;
+            GenstandReturn = await response.Content.ReadFromJsonAsync<Genstand>();
             GenstandReturn = new();
 
         }

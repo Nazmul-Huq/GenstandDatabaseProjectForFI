@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using GenstandDatabaseProjectForFI.Data;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SharedLibrary.Interfaces;
 using SharedLibrary.Models;
@@ -18,8 +19,15 @@ namespace GenstandDatabaseProjectForFI.Controllers
         [HttpPost("Add-Genstand")]
         public async Task<ActionResult<List<Genstand>>> AddProductAsync(Genstand model)
         {
-            var product = await genstandOperations.AddProductAsync(model);
+            var product = await genstandOperations.AddGenstandAsync(model);
             return Ok(product);
+        }
+
+        [HttpGet("Get-All-Genstands")]
+        public async Task<ActionResult<List<Genstand>>> GetAllGenstandsAsync()
+        {
+            var genstands = await genstandOperations.GetAllGenstandsAsync();
+            return Ok(genstands);
         }
 
     }

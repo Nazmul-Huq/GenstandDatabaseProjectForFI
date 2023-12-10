@@ -1,0 +1,73 @@
+﻿@page "/genstand-list"
+
+<h3>Liste af Genstand</h3>
+
+ <div>
+    @if (Genstands.Count > 0)
+    {
+       
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Description</th>
+        
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var genstand in Genstands)
+                    {
+                        <tr>
+                            <td>@genstand.Id</td>
+                            <td>@genstand.Name</td>
+                            <td>@genstand.Description</td>
+                            <td>
+                                <div class="hstack gap-2">
+                                    <button class="btn  btn-info" @onclick="()=>EditGenstand(genstand)"> Edit</button>
+                                    <button class="btn  btn-danger" @onclick="() => DeleteGenstand(genstand.Id)">Delete</button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info"> Ingen Genstand Fundet </div>
+    } 
+    </div>
+
+@code {
+    private List<Genstand> Genstands { get; set; } = new List<Genstand>();
+
+    private async Task GetAllGenstandAsync()
+    {
+        var genstands = await httpClient.GetAsync("api/Genstand/Get-All-Genstands");
+        if (genstands is null) return;
+
+        var returnedGenstands = await genstands.Content.ReadFromJsonAsync<List<Genstand>>();
+        if (returnedGenstands is null) return;
+
+        returnedGenstands.ForEach(g => Genstands.Add(g));
+    }
+
+    private void EditGenstand(Genstand genstand)
+    {
+
+    }
+
+    private void DeleteGenstand(int id)
+    {
+
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetAllGenstandAsync();
+    }
+
+}

@@ -9,6 +9,9 @@ namespace SharedLibrary.Interfaces
 {
     public interface IGenstandOperations
     {
-        Task<Genstand> AddProductAsync(Genstand model);
+        Task<Genstand> AddGenstandAsync(Genstand model);
+        Task<List<Genstand>> GetAllGenstandsAsync();
+        Task<Genstand> DeleteGenstandAsync(int genstandId);
+        Task<Genstand> GetGenstandByIdAsync(int genstandId);
     }
 }
