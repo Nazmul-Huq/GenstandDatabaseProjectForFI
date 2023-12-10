@@ -30,5 +30,14 @@ namespace GenstandDatabaseProjectForFI.Controllers
             return Ok(genstands);
         }
 
+
+
+        [HttpDelete("Delete-Genstand/{id}")]
+        public async Task<ActionResult<Genstand>> DeleteGenstandAsync(int id)
+        {
+            var product = await genstandOperations.DeleteGenstandAsync(id);
+            return Ok(product);
+        }
+
     }
 }

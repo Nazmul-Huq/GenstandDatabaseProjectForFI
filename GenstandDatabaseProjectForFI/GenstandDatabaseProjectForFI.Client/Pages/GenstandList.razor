@@ -1,4 +1,5 @@
 ﻿@page "/genstand-list"
+@rendermode InteractiveAuto
 
 <h3>Liste af Genstand</h3>
 
@@ -26,7 +27,7 @@
                             <td>
                                 <div class="hstack gap-2">
                                     <button class="btn  btn-info" @onclick="()=>EditGenstand(genstand)"> Edit</button>
-                                    <button class="btn  btn-danger" @onclick="() => DeleteGenstand(genstand.Id)">Delete</button>
+                                    <button class="btn  btn-danger" @onclick="() => DeleteGenstand(genstand)">Delete</button>
                                 </div>
                             </td>
                         </tr>
@@ -41,9 +42,12 @@
     } 
     </div>
 
-@code {
-    private List<Genstand> Genstands { get; set; } = new List<Genstand>();
 
+
+@code {
+    private List<Genstand> Genstands { get; set; } = new ();
+    private string currentHeading = "Initial heading";
+    private string? newHeading;
     private async Task GetAllGenstandAsync()
     {
         var genstands = await httpClient.GetAsync("api/Genstand/Get-All-Genstands");
@@ -54,20 +58,25 @@
 
         returnedGenstands.ForEach(g => Genstands.Add(g));
     }
+    protected override async Task OnInitializedAsync()
+    {
+        await GetAllGenstandAsync();
+    }
+
 
     private void EditGenstand(Genstand genstand)
     {
 
     }
 
-    private void DeleteGenstand(int id)
+    private async Task DeleteGenstand(Genstand genstand)
     {
-
-    }
-
-    protected override async Task OnInitializedAsync()
-    {
+        if (!await IJSRuntime.InvokeAsync<bool>("confirm", $"Er du sikker på at du vill slette\n Id:  {genstand.Id} \n Name: {genstand.Name} \n Description: {genstand.Description}"))
+            return;
+        var genstandToDelete = await httpClient.DeleteAsync($"api/Genstand/Delete-Genstand/{genstand.Id}");
+        var response = await genstandToDelete.Content.ReadFromJsonAsync<Genstand>();
+        Genstands?.Clear();
         await GetAllGenstandAsync();
+        //return response!;
     }
-
 }
