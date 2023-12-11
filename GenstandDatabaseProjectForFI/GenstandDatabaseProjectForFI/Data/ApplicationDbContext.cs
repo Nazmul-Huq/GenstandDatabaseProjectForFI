@@ -7,5 +7,7 @@ namespace GenstandDatabaseProjectForFI.Data
     public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<ApplicationUser>(options)
     {
         public DbSet<Genstand> Genstands { get; set; }
+
+        public DbSet<Film> Film { get; set; }
     }
 }
