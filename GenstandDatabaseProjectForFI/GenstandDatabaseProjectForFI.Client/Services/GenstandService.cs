@@ -38,5 +38,10 @@ namespace GenstandDatabaseProjectForFI.Client.Services
         {
             throw new NotImplementedException();
         }
+
+        public Task<Genstand> UpdateGenstandAsync(Genstand model)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

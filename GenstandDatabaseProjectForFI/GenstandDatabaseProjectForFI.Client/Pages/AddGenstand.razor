@@ -1,5 +1,6 @@
 ﻿@page "/add-genstand"
-@* @rendermode InteractiveAuto *@
+@page "/add-genstand/{Id:int}"
+@rendermode InteractiveAuto
 
 
 <h3>AddGenstand</h3>
@@ -8,6 +9,7 @@
     <EditForm Model="@GenstandModel" OnValidSubmit="@HandleSave" FormName="addGenstand">
         <DataAnnotationsValidator />
         <ValidationSummary />
+
         <div class="form-group">
             <label class="form-label">Genstand Name</label>
             <InputText @bind-Value="GenstandModel.Name" class="form-control"></InputText>
@@ -23,20 +25,28 @@
     </EditForm>
 </div>
 @code {
-    [SupplyParameterFromForm]
+    //[SupplyParameterFromForm]
     public Genstand GenstandModel { get; set; } = new();
-
+    [Parameter] public int Id { get; set; }
     public Genstand GenstandReturn = new();
 
     private async Task HandleSave()
     {
-        // if (ProductModel.Id > 0)
-        // {
-        //     ReturnProduct = await ProductService.UpdateProductAsync(ProductModel);
-        //     ProductModel = new();
-        // }
+        if (GenstandModel.Id > 0)
+        {
 
-        // else
+            var response = await httpClient.PutAsJsonAsync("api/Genstand/Update-Genstand", GenstandModel);
+            var genstand = await response.Content.ReadFromJsonAsync<Genstand>();
+            if(genstand is not null)
+            {
+                GenstandModel = new();
+                NavigationManager.NavigateTo("genstand-list");
+            }          
+            //ReturnProduct = await ProductService.UpdateProductAsync(ProductModel);
+
+        }
+
+        else
         {
             //GenstandReturn = await GenstandService.AddGenstandAsync(GenstandModel);
             var response = await httpClient.PostAsJsonAsync("api/Genstand/Add-Genstand", GenstandModel);
@@ -47,5 +57,15 @@
         }
 
     }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Id > 0)
+        {
+            var response = await httpClient.GetAsync($"api/Genstand/Single-Genstand/{Id}");
+            GenstandModel = await response.Content.ReadFromJsonAsync<Genstand>();
+        }
+    }
+
 
 }

@@ -47,5 +47,15 @@ namespace GenstandDatabaseProjectForFI.Repositories
             if (genstand is null) return null!;
             return genstand;
         }
+
+        public async Task<Genstand> UpdateGenstandAsync(Genstand model)
+        {
+            var genstand = await applicationDbContext.Genstands.FirstOrDefaultAsync(g => g.Id == model.Id);
+            if (genstand is null) return null!;
+            genstand.Name = model.Name;
+            genstand.Description = model.Description;
+            await applicationDbContext.SaveChangesAsync();
+            return await applicationDbContext.Genstands.FirstOrDefaultAsync(g => g.Id == model.Id)!;
+        }
     }
 }

@@ -13,5 +13,6 @@ namespace SharedLibrary.Interfaces
         Task<List<Genstand>> GetAllGenstandsAsync();
         Task<Genstand> DeleteGenstandAsync(int genstandId);
         Task<Genstand> GetGenstandByIdAsync(int genstandId);
+        Task<Genstand> UpdateGenstandAsync(Genstand model);
     }
 }

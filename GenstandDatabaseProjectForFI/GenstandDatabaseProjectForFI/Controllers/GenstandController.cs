@@ -39,5 +39,20 @@ namespace GenstandDatabaseProjectForFI.Controllers
             return Ok(product);
         }
 
+
+        [HttpGet("Single-Genstand/{id}")]
+        public async Task<ActionResult<List<Genstand>>> GetSingleGenstandAsync(int id)
+        {
+            var genstand = await genstandOperations.GetGenstandByIdAsync(id);
+            return Ok(genstand);
+        }
+
+        [HttpPut("Update-Genstand")]
+        public async Task<ActionResult<Genstand>> UpdateGenstandAsync(Genstand model)
+        {
+            var product = await genstandOperations.UpdateGenstandAsync(model);
+            return Ok(product);
+        }
+
     }
 }
