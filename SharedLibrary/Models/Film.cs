@@ -35,5 +35,14 @@ namespace SharedLibrary.Models
             Genre = genre;
             Fida = fida;
         }
+
+        public Film(int id, string name, int year, string genre, string fida)
+        {
+            Id = id;
+            Name = name;
+            Year = year;
+            Genre = genre;
+            Fida = fida;
+        }
     }
 }
