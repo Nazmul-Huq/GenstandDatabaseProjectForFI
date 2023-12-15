@@ -31,14 +31,18 @@ namespace GenstandDatabaseProjectForFI.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<List<Film>> GetAllFilmsAsync()
+        public async Task<List<Film>> GetAllFilmsAsync()
         {
-            throw new NotImplementedException();
+      
+            var films = await applicationDbContext.Films.ToListAsync();
+            if (films is null) return null!;
+            return films;
+           
         }
 
         public async Task<Film> GetFilmByIdAsync(int filmId)
         {
-            var film = await applicationDbContext.Films.FirstOrDefaultAsync(g => g.Id == filmId);
+            var film = await applicationDbContext.Films.FirstOrDefaultAsync(f => f.Id == filmId);
             if (film is null) return null!;
             return film;
         }

@@ -25,18 +25,18 @@ namespace GenstandDatabaseProjectForFI.Controllers
             return Ok(film);
         }
 
-        //[HttpGet("Single-Genstand/{id}")]
-        //public async Task<ActionResult<List<Genstand>>> GetSingleGenstandAsync(int id)
-        //{
-        //    var genstand = await genstandOperations.GetGenstandByIdAsync(id);
-        //    return Ok(genstand);
-        //}
+        [HttpGet("Single-Film/{id}")]
+        public async Task<ActionResult<Film>> GetSingleFilmAsync(int id)
+        {
+            var film = await filmOperations.GetFilmByIdAsync(id);
+            return Ok(film);
+        }
 
-        //[HttpGet("Get-All-Genstands")]
-        //public async Task<ActionResult<List<Genstand>>> GetAllGenstandsAsync()
-        //{
-        //    var genstands = await genstandOperations.GetAllGenstandsAsync();
-        //    return Ok(genstands);
-        //}
+        [HttpGet("Get-All-Films")]
+        public async Task<ActionResult<List<Film>>> GetAllFilmsAsync()
+        {
+            var films = await filmOperations.GetAllFilmsAsync();
+            return Ok(films);
+        }
     }
 }
