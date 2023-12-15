@@ -10,7 +10,7 @@ namespace SharedLibrary.Models
 {
     public class Film
     {
-        [Key]
+        //[Key]
         public int Id { get; set; }
 
         public string Name { get; set; }
@@ -23,5 +23,17 @@ namespace SharedLibrary.Models
 
         public ICollection<Genstand> Genstands { get; set; } = new HashSet<Genstand>();
 
+        public Film()
+        {
+            
+        }
+
+        public Film(string name, int year, string genre, string fida)
+        {
+            Name = name;
+            Year = year;
+            Genre = genre;
+            Fida = fida;
+        }
     }
 }
