@@ -1,9 +1,4 @@
 ﻿
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-}
 
 .form-container {
     margin-left: auto;
@@ -15,18 +10,44 @@ body {
     max-width: 600px;
 }
 
-input[type="text"],
-select,
-textarea {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
 
-.btn btn-primary {
+
+.btn-primary {
     text-align: right;
     background-color: #4CAF50;
     color: white;
+}
+
+#loan{
+    width: auto;
+    
+    padding-bottom: 1rem;
+    padding-top: 1rem;
+}
+
+.form-group-loan {
+    width: 2rem;
+}
+
+
+/* Style adjustments for file input */
+.form-control-file {
+    height: calc(2.25rem + 2px);
+    padding: .375rem 0; /* Adjusts padding to align with other inputs */
+}
+
+/* You can also style the file input directly if needed */
+input[type="file"] {
+    /* Styles for the file input directly, if necessary */
+}
+
+
+#genstandsimage{
+    padding: 6rem;
+
+    
+    border-bottom: solid;
+    border-width: thin;
+    margin-bottom: 1rem;
+
 }

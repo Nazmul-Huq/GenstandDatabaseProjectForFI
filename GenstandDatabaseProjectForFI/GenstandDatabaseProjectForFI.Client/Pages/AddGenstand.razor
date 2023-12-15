@@ -3,20 +3,27 @@
 @rendermode InteractiveAuto
 
 
-<h3>AddGenstand</h3>
+<h3>Tilføj Genstand</h3>
 
 <div class="form-container">
     <EditForm Model="@GenstandModel" OnValidSubmit="@HandleSave" FormName="addGenstand">
         <DataAnnotationsValidator />
         <ValidationSummary />
 
+        <div class="form-group" id="genstandsimage">
+            <label class="form-label">Billede</label>
+            
+        </div>
+        
+        
         <div class="form-group">
-            <label class="form-label">Genstand Name</label>
+            <label class="form-label">Genstands Navn</label>
             <InputText @bind-Value="GenstandModel.Name" class="form-control"></InputText>
             <ValidationMessage For="()=>GenstandModel.Name"></ValidationMessage>
         </div>
+
         <div class="form-group">
-            <label class="form-label">Genstand Description</label>
+            <label class="form-label">Beskrivelse</label>
             <InputText @bind-Value="GenstandModel.Description" class="form-control"></InputText>
             <ValidationMessage For="()=>GenstandModel.Description"></ValidationMessage>
         </div>
@@ -42,9 +49,9 @@
             <ValidationMessage For="()=>GenstandModel.Condition"></ValidationMessage>
         </div>
 
-        <div class="form-group">
+        <div class="form-group" id="loan">
             <label class="form-label">Udlånt</label>
-            <InputCheckbox @bind-Value="GenstandModel.Loan" class="form-control"></InputCheckbox>
+            <InputCheckbox @bind-Value="GenstandModel.Loan" class="form-control-loan"></InputCheckbox>
             <ValidationMessage For="()=>GenstandModel.Loan"></ValidationMessage>
         </div>
        
@@ -103,6 +110,7 @@
             GenstandModel = await response.Content.ReadFromJsonAsync<Genstand>();
         }
     }
-
-
+     
+    
+    
 }

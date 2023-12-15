@@ -1,0 +1,51 @@
+﻿@page "/genstands-side/{Id:int}"
+
+@inject HttpClient httpClient
+@inject NavigationManager NavigationManager
+
+<PageTitle>Genstands side</PageTitle>
+
+@if (genstand != null)
+{
+    <div>
+        <h2>Genstands detaljer</h2>
+        <dl class="row">
+            <dt class="col-sm-2">Id:</dt>
+            <dd class="col-sm-10">@genstand.Id</dd>
+
+            <dt class="col-sm-2">Name:</dt>
+            <dd class="col-sm-10">@genstand.Name</dd>
+
+            <dt class="col-sm-2">Description:</dt>
+            <dd class="col-sm-10">@genstand.Description</dd>
+
+            <!-- Display other properties here -->
+        </dl>
+    </div>
+}
+else
+{
+    <p>ingen genstand fundet...</p>
+}
+
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private Genstand genstand;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await httpClient.GetAsync($"api/genstand/{Id}");
+        if (response.IsSuccessStatusCode)
+        {
+            genstand = await response.Content.ReadFromJsonAsync<Genstand>();
+        }
+        else
+        {
+            // Handle the error, e.g., display a message or navigate back
+            NavigationManager.NavigateTo("/genstand-list");
+        }
+    }
+}

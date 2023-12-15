@@ -1,19 +1,20 @@
 ﻿@page "/genstand-list"
 @rendermode InteractiveAuto
 
-<h3>Liste af Genstand</h3>
+<h3>Liste af Genstande</h3>
 
- <div>
+ <div class="container">
     @if (Genstands.Count > 0)
     {
        
         <div class="card-body">
-            <table class="table table-striped">
+            <table class="table table-sm">
                 <thead>
                     <tr>
                         <th>Id</th>
                         <th>Name</th>
                         <th>Description</th>
+                        <th></th>
         
                     </tr>
                 </thead>
@@ -24,10 +25,11 @@
                             <td>@genstand.Id</td>
                             <td>@genstand.Name</td>
                             <td>@genstand.Description</td>
-                            <td>
-                                <div class="hstack gap-2">
-                                    <button class="btn  btn-info" @onclick="()=>EditGenstand(genstand)"> Edit</button>
-                                    <button class="btn  btn-danger" @onclick="() => DeleteGenstand(genstand)">Delete</button>
+                            <td class="btn-td">
+                                <div class="hstack gap-3">
+                                    <button class="btn  btn-info btn-extra-small" @onclick="()=>EditGenstand(genstand)"> Edit</button>
+                                    <button class="btn  btn-danger btn-extra-small" @onclick="() => DeleteGenstand(genstand)">Delete</button>
+                                    <button class="btn btn-secondary btn-extra-small" @onclick="() => ViewGenstand(genstand)">View</button>
                                 </div>
                             </td>
                         </tr>
@@ -78,5 +80,11 @@
         Genstands?.Clear();
         await GetAllGenstandAsync();
         //return response!;
+    }
+
+    private void ViewGenstand(Genstand genstand)
+    {
+        NavigationManager.NavigateTo($"/genstands-side/{genstand.Id}");
+
     }
 }
