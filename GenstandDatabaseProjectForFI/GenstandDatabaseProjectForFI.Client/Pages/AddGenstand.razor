@@ -1,6 +1,10 @@
 ﻿@page "/add-genstand"
 @page "/add-genstand/{Id:int}"
+
 @rendermode InteractiveAuto
+
+@attribute [Authorize]
+@* @attribute [Authorize(Roles = "Admin")] *@
 
 
 <h3>Tilføj Genstand</h3>
