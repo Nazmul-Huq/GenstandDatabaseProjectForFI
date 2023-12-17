@@ -35,7 +35,11 @@
             <ValidationMessage For="()=>GenstandModel.DateOfGenstand"></ValidationMessage>
         </div>
 
-        
+        <div class="form-group">
+            <label class="form-label">Størrelse</label>
+            <InputNumber @bind-Value="GenstandModel.Size" class="form-control"></InputNumber>
+            <ValidationMessage For="()=>GenstandModel.Size"></ValidationMessage>
+        </div>
 
         <div class="form-group">
             <label class="form-label">Placering</label>

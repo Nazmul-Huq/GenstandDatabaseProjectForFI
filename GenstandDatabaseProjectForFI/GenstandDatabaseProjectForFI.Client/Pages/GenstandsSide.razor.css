@@ -1,0 +1,120 @@
+﻿.page-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%; /* Ensure full width */
+}
+
+.content-container {
+    display: flex;
+    flex-wrap: wrap; /* Allows for responsive wrapping */
+}
+
+.details-container,
+.image-container {
+    flex: 1 1 50%; /* Flex basis of 50% means each container will take half of the content-container's width */
+    padding: 16px;
+    box-sizing: border-box; /* Include padding in the element's total width and height */
+}
+
+.details-container {
+    border-right: 1px solid #ccc; /* Add a border if needed */
+}
+
+.image-container {
+    border-left: 1px solid #ccc; /* Add a border if needed */
+    display: flex;
+    justify-content: center; /* Center image inside the container */
+    align-items: center; /* Center image vertically */
+}
+
+.details-form {
+    border: 1px solid #000000; /* Light grey border */
+    padding: 20px;
+    border-radius: 5px;
+    background-color: #fff; /* White background */
+}
+
+    .details-form h2 {
+        margin-bottom: 20px;
+    }
+
+.form-group {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+    .form-group label {
+        .page-container
+    }
+{
+    display: flex;
+    flex-direction: column;
+    width: 100%; /* Ensure full width */
+}
+
+.back-button {
+    margin-bottom: 20px;
+}
+
+    .back-button button {
+        background-color: #f0f0f0; /* Light grey background */
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+.content-container {
+    display: flex;
+    flex-wrap: wrap; /* Allows for responsive wrapping */
+}
+
+.details-container {
+    flex: 1 1 50%; /* Flex basis of 50% means each container will take half of the content-container's width */
+    padding: 16px;
+    box-sizing: border-box; /* Include padding in the element's total width and height */
+    border-right: 1px solid #ccc; /* Add a border if needed */
+}
+
+.image-container {
+    flex: 1 1 50%; /* Flex basis of 50% means each container will take half of the content-container's width */
+    padding: 16px;
+    box-sizing: border-box; /* Include padding in the element's total width and height */
+    border-left: 1px solid #ccc; /* Add a border if needed */
+    display: flex;
+    justify-content: center; /* Center image inside the container */
+    align-items: center; /* Center image vertically */
+}
+
+.detail {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.label {
+    width: 180px; /* Fixed width for labels */
+    font-weight: bold;
+    color: #555; /* Medium grey text */
+}
+
+.value {
+    flex-grow: 1; /* Make the value take up the remaining space */
+    background-color: #f7f7f7; /* Very light grey background */
+    padding: 5px 10px;
+    border-radius: 3px;
+    border-style: solid
+}
+
+/* Additional styles */
+/* Add other CSS styles as needed for your layout */
+
+        width: 150px; /* Adjust width as needed */
+        font-weight: bold;
+    }
+
+    .form-group input {
+        flex: 1;
+        padding: 5px;
+        border: 1px solid #ccc;
+    }
