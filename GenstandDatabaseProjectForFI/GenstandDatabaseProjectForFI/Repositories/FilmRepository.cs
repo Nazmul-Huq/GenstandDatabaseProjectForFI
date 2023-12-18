@@ -1,4 +1,5 @@
 ﻿using GenstandDatabaseProjectForFI.Data;
+using Humanizer.Localisation;
 using Microsoft.EntityFrameworkCore;
 using SharedLibrary.Interfaces;
 using SharedLibrary.Models;
@@ -26,9 +27,13 @@ namespace GenstandDatabaseProjectForFI.Repositories
 
         }
 
-        public Task<Film> DeleteFilmAsync(int filmId)
+        public async Task<Film> DeleteFilmAsync(int filmId)
         {
-            throw new NotImplementedException();
+            var film = await applicationDbContext.Films.FirstOrDefaultAsync(g => g.Id == filmId);
+            if (film is null) return null!;
+            applicationDbContext.Films.Remove(film);
+            await applicationDbContext.SaveChangesAsync();
+            return film;
         }
 
         public async Task<List<Film>> GetAllFilmsAsync()
@@ -47,9 +52,16 @@ namespace GenstandDatabaseProjectForFI.Repositories
             return film;
         }
 
-        public Task<Film> UpdateFilmAsync(Film film)
+        public async Task<Film> UpdateFilmAsync(Film film)
         {
-            throw new NotImplementedException();
+            var filmToUpdate = await applicationDbContext.Films.FirstOrDefaultAsync(F => F.Id == film.Id);
+            if (filmToUpdate is null) return null!;
+            filmToUpdate.Name = film.Name;
+            filmToUpdate.Year = film.Year;
+            filmToUpdate.Genre = film.Genre;
+            filmToUpdate.Fida = film.Fida;
+            await applicationDbContext.SaveChangesAsync();
+            return await applicationDbContext.Films.FirstOrDefaultAsync(F => F.Id == film.Id)!;
         }
     }
 }

@@ -38,5 +38,21 @@ namespace GenstandDatabaseProjectForFI.Controllers
             var films = await filmOperations.GetAllFilmsAsync();
             return Ok(films);
         }
+
+        [HttpPut("Update-Film")]
+        public async Task<ActionResult<Film>> UpdateFilmAsync(FilmDto filmDto)
+        {
+            if(filmDto == null) BadRequest();
+            Film filmToUpdate = new Film(filmDto.Id, filmDto.Name, filmDto.Year, filmDto.Genre, filmDto.Fida);
+            var film = await filmOperations.UpdateFilmAsync(filmToUpdate);
+            return Ok(film);
+        }
+
+        [HttpDelete("Delete-Film/{id}")]
+        public async Task<ActionResult<Film>> DeleteFilmAsync(int id)
+        {
+            var film = await filmOperations.DeleteFilmAsync(id);
+            return Ok(film);
+        }
     }
 }
