@@ -1,0 +1,54 @@
+﻿
+
+.form-container {
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px;
+    background: #fff;
+    width: calc(100% - 60px); /* Adjust width based on sidebar */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+}
+
+
+
+.btn-primary {
+    text-align: right;
+    background-color: #4CAF50;
+    color: white;
+}
+
+#loan {
+    width: auto;
+    padding-bottom: 1rem;
+    padding-top: 1rem;
+}
+
+.form-group-loan {
+    width: 2rem;
+}
+
+
+/* Style adjustments for file input */
+.form-control-file {
+    height: calc(2.25rem + 2px);
+    padding: .375rem 0; /* Adjusts padding to align with other inputs */
+}
+
+/* You can also style the file input directly if needed */
+input[type="file"] {
+    /* Styles for the file input directly, if necessary */
+}
+
+
+#genstandsimage {
+    padding: 6rem;
+    border-bottom: solid;
+    border-width: thin;
+    margin-bottom: 1rem;
+}
+
+#linkInput{
+    margin-top:2rem;
+    margin-bottom: 1rem;
+}

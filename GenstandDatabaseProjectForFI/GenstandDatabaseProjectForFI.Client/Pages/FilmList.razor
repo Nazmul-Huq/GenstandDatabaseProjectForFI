@@ -1,0 +1,74 @@
+﻿@page "/film-list"
+
+@rendermode InteractiveAuto
+
+<h3>Liste af Film</h3>
+
+<div class="container">
+    @if (Film.Count > 0)
+    {
+        <div class="card-body">
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Navn</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var film in Film)
+                    {
+                        <tr>
+                            <td>@film.Id</td>
+                            <td>@film.Name</td>
+                            <div class="hstack gap-3">
+                                <button class="btn  btn-info btn-extra-small" @onclick="()=>EditFilm(film)"> Edit</button>
+                                <button class="btn  btn-danger btn-extra-small" @onclick="() => DeleteFilm(film)">Delete</button>
+                                @*<button class="btn btn-secondary btn-extra-small" @onclick="() => ViewFilm(film)">View</button>*@
+                            </div>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info"> Ingen Film Fundet </div>
+    }
+</div>
+
+
+@code {
+    private List<Film> Film { get; set; } = new();
+    private string currentHeading = "Initial heading";
+    private string? newHeading;
+    private async Task GetAllFilmAsync()
+    {
+        var film = await httpClient.GetAsync("api/Film/Get-All-Films");
+        if (film is null) return;
+
+        var returnedFilms = await film.Content.ReadFromJsonAsync<List<Film>>();
+        if (returnedFilms is null) return;
+
+        returnedFilms.ForEach(g => Film.Add(g));
+    }
+    protected override async Task OnInitializedAsync(){
+        await GetAllFilmAsync();
+    }
+
+    private void EditFilm(Film film)
+    {
+        NavigationManager.NavigateTo($"add-film/{film.Id}");
+    }
+
+    private async Task DeleteFilm(Film film)
+    {
+        if (!await IJSRuntime.InvokeAsync<bool>("confirm", $"Er du sikker På du vil slette \n Id: {film.Id} Navn: {film.Name}")) return;
+        var filmToDelete = await httpClient.DeleteAsync($"api/Film/Delete-Film/{film.Id}");
+        var response = await filmToDelete.Content.ReadFromJsonAsync<Film>();
+        Film?.Clear();
+        await GetAllFilmAsync();
+    }
+}
