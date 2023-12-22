@@ -1,6 +1,7 @@
 ﻿using GenstandDatabaseProjectForFI.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SharedLibrary.Dtos;
 using SharedLibrary.Interfaces;
 using SharedLibrary.Models;
 
@@ -31,7 +32,6 @@ namespace GenstandDatabaseProjectForFI.Controllers
         }
 
 
-
         [HttpDelete("Delete-Genstand/{id}")]
         public async Task<ActionResult<Genstand>> DeleteGenstandAsync(int id)
         {
@@ -52,6 +52,14 @@ namespace GenstandDatabaseProjectForFI.Controllers
         {
             var product = await genstandOperations.UpdateGenstandAsync(model);
             return Ok(product);
+        }
+
+        [HttpGet("Search-Genstand-By-Name/{searchText}")]
+        public async Task<ActionResult<List<Genstand>>> SearchGenstandByNameAsync(string searchText)
+        {
+            if (searchText == null) { return BadRequest(); }
+            var genstands = await genstandOperations.SearchGenstandByNameAsync(searchText);
+            return Ok(genstands);
         }
 
     }

@@ -1,13 +1,32 @@
-﻿@page "/genstand-list"
-@rendermode InteractiveAuto
+﻿@page "/genstand-search"
+@using SharedLibrary.Dtos
+@inject HttpClient httpClient
 
-<h3>Liste af Genstande</h3>
-<hr />
+@* @rendermode InteractiveAuto *@
 
- <div class="container">
+<h3>Søg Genstand</h3>
+<div class="search-div">
+<EditForm Model="@GenstandSearchDto" OnValidSubmit="@HandleSearch" FormName="searchGenstand">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+    <div class="form-group">
+        <label class="form-label">Søg Genstand Navn</label>
+        <InputText @bind-Value="GenstandSearchDto.SearchText" class="form-control"></InputText>
+        <ValidationMessage For="()=>GenstandSearchDto.SearchText"></ValidationMessage>
+    </div>
+    
+    <br>
+    <button type="submit" class="btn btn-primary">Søg</button>
+</EditForm>
+
+</div>
+<br>
+
+<div class="container">
     @if (Genstands.Count > 0)
     {
-       
+
         <div class="card-body">
             <table class="table table-sm">
                 <thead>
@@ -16,7 +35,7 @@
                         <th>Navn</th>
                         <th>Beskrivelse</th>
                         <th></th>
-        
+
                     </tr>
                 </thead>
                 <tbody>
@@ -42,30 +61,32 @@
     else
     {
         <div class="alert alert-info"> Ingen Genstand Fundet </div>
-    } 
-    </div>
-
-
+    }
+</div>
 
 @code {
-    private List<Genstand> Genstands { get; set; } = new ();
-    private string currentHeading = "Initial heading";
-    private string? newHeading;
-    private async Task GetAllGenstandAsync()
+    [SupplyParameterFromForm]
+    public GenstandSearchDto GenstandSearchDto { get; set;  } = new();
+
+    private List<Genstand> Genstands { get; set; } = new();
+
+    public async Task HandleSearch()
     {
-        var genstands = await httpClient.GetAsync("api/Genstand/Get-All-Genstands");
-        if (genstands is null) return;
+        if(GenstandSearchDto is not null)
+        {
+            string searchText = GenstandSearchDto.SearchText;
+            //var response = httpClient.GetAsync($"api/Genstand/Search-Genstand-By-Name/postman").GetAwaiter().GetResult() ;
+            var response = httpClient.GetAsync($"api/Genstand/Search-Genstand-By-Name/{searchText}").GetAwaiter().GetResult() ;
+            if (response is null) return;
 
-        var returnedGenstands = await genstands.Content.ReadFromJsonAsync<List<Genstand>>();
-        if (returnedGenstands is null) return;
+            var returnedGenstands = await response.Content.ReadFromJsonAsync<List<Genstand>>();
+            if (returnedGenstands is null) return;
+            Genstands.Clear();
+            returnedGenstands.ForEach(g => Genstands.Add(g));
 
-        returnedGenstands.ForEach(g => Genstands.Add(g));
+            GenstandSearchDto = new();
+        }
     }
-    protected override async Task OnInitializedAsync()
-    {
-        await GetAllGenstandAsync();
-    }
-
 
     private void EditGenstand(Genstand genstand)
     {
@@ -79,7 +100,7 @@
         var genstandToDelete = await httpClient.DeleteAsync($"api/Genstand/Delete-Genstand/{genstand.Id}");
         var response = await genstandToDelete.Content.ReadFromJsonAsync<Genstand>();
         Genstands?.Clear();
-        await GetAllGenstandAsync();
+        await HandleSearch();
         //return response!;
     }
 
@@ -88,4 +109,5 @@
         NavigationManager.NavigateTo($"/genstands-side/{genstand.Id}");
 
     }
+
 }

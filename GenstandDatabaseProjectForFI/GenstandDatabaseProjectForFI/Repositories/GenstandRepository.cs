@@ -1,9 +1,11 @@
 ﻿using GenstandDatabaseProjectForFI.Data;
 using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
+using SharedLibrary.Dtos;
 using SharedLibrary.Interfaces;
 using SharedLibrary.Models;
 using System;
+using System.Linq;
 
 namespace GenstandDatabaseProjectForFI.Repositories
 {
@@ -46,6 +48,14 @@ namespace GenstandDatabaseProjectForFI.Repositories
             var genstand = await applicationDbContext.Genstands.FirstOrDefaultAsync(g => g.Id == genstandId);
             if (genstand is null) return null!;
             return genstand;
+        }
+
+        public async Task<List<Genstand>> SearchGenstandByNameAsync(string SearchText)
+        {
+            if (SearchText == null) return null!;
+            var genstands = await applicationDbContext.Genstands.Where(g => g.Name.Contains(SearchText)).ToListAsync();
+            if (genstands is null) return null;
+            return genstands;
         }
 
         public async Task<Genstand> UpdateGenstandAsync(Genstand model)
