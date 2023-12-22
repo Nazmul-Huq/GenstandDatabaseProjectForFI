@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using SharedLibrary.Models
 
 <PageTitle>Startside</PageTitle>
 
@@ -10,12 +11,29 @@
 
 
         <div class="search-div">
-            <form onsubmit="event.preventDefault();" role="search">
-                <label for="search">Søg</label>
-                <input id="search" type="search" placeholder="Søg på en genstand" autofocus required />
-                <button type="submit">Søg</button>
-            </form>
+            <Editform Model="@SearchModel" onvalidsubmit="@SearchGenstand" formname="searchGenstand">
+                <label for="search">søg</label>
+                <input id="search" type="search" placeholder="søg på en genstand" autofocus required />
+                <button type="submit">søg</button>
+                </Editform>
         </div>
     </div>
 
 </main>
+
+@code {
+    public SearchModel SearchModel { get; set; }
+    public async Task SearchGenstand()
+    {
+        // var response = await httpClient.PutAsJsonAsync("api/Genstand/Update-Genstand", SearchModel);
+        // var genstand = await response.Content.ReadFromJsonAsync<SearchModel>();
+        // if (genstand is not null)
+        // {
+        //     SearchModel = new();
+        // }
+    }
+    // public record SearchModel
+    // {
+    //     public string SearchInput{ get; set; }
+    // }
+}
