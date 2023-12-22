@@ -3,7 +3,7 @@
 
 @rendermode InteractiveAuto
 
-@attribute [Authorize]
+@* @attribute [Authorize] *@
 @* @attribute [Authorize(Roles = "Admin")] *@
 
 
@@ -31,7 +31,12 @@
             <InputText @bind-Value="GenstandModel.Description" class="form-control"></InputText>
             <ValidationMessage For="()=>GenstandModel.Description"></ValidationMessage>
         </div>
-        
+
+        <div class="form-group">
+            <label class="form-label">Billede Id</label>
+            <InputText @bind-Value="GenstandModel.PhotoReference" class="form-control"></InputText>
+            <ValidationMessage For="()=>GenstandModel.PhotoReference"></ValidationMessage>
+        </div>
 
         <div class="form-group">
             <label class="form-label">Dato for Genstand</label>
@@ -94,13 +99,11 @@
                 GenstandModel = new();
                 NavigationManager.NavigateTo("genstand-list");
             }          
-            //ReturnProduct = await ProductService.UpdateProductAsync(ProductModel);
 
         }
 
         else
         {
-            //GenstandReturn = await GenstandService.AddGenstandAsync(GenstandModel);
             var response = await httpClient.PostAsJsonAsync("api/Genstand/Add-Genstand", GenstandModel);
             if (response is null) return;
             GenstandReturn = await response.Content.ReadFromJsonAsync<Genstand>();

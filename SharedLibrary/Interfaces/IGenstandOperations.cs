@@ -1,4 +1,5 @@
-﻿using SharedLibrary.Models;
+﻿using SharedLibrary.Dtos;
+using SharedLibrary.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,6 @@ namespace SharedLibrary.Interfaces
         Task<Genstand> DeleteGenstandAsync(int genstandId);
         Task<Genstand> GetGenstandByIdAsync(int genstandId);
         Task<Genstand> UpdateGenstandAsync(Genstand model);
+        Task<List<Genstand>> SearchGenstandByNameAsync(string genstandName);
     }
 }
