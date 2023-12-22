@@ -1,0 +1,14 @@
+﻿@page "/search-page"
+
+@inject NavigationManager NavigationManager
+
+<h1>Søg</h1>
+<hr>
+
+<div class="search-div">
+    <form onsubmit="event.preventDefault();" role="search">
+        <label for="search">Søg</label>
+        <input id="search" type="search" placeholder="Søg på en genstand" autofocus required />
+        <button type="submit">Søg</button>
+    </form>
+</div>

@@ -8,6 +8,7 @@
 
 
 <h3>Tilføj Genstand</h3>
+<hr />
 
 <div class="form-container">
     <EditForm Model="@GenstandModel" OnValidSubmit="@HandleSave" FormName="addGenstand">
@@ -62,12 +63,51 @@
             <InputCheckbox @bind-Value="GenstandModel.Loan" class="form-control-loan"></InputCheckbox>
             <ValidationMessage For="()=>GenstandModel.Loan"></ValidationMessage>
         </div>
-       
+        
         @* <div class="form-group">
-                    <label class="form-label">Genstands Katergori</label>
-                    <InputSelect @bind-Value="GenstandModel.Category" TValue="string" class="form-control"></InputSelect>
-                    <ValidationMessage For="()=> GenstandModel.Description" />
-                </div> *@
+        <label class="form-label">Genstands Katergori</label>
+        <InputSelect @bind-Value="GenstandModel.Category" TValue="string" class="form-control"></InputSelect>
+        <ValidationMessage For="()=> GenstandModel.Description" />
+        </div> *@
+
+        @*
+         <div class="form-group">
+            <label class="form-label">Film Id</label>
+            <InputNumber @bind-Value="GenstandModel.Film.Id" class="form-control"></InputNumber>
+            <ValidationMessage For="()=> GenstandModel.Film.Id"></ValidationMessage>
+
+        </div>
+        *@
+        @*
+        <div class="form-group">
+            <label class="form-label">Film Navn</label>
+            <InputText @bind-Value="GenstandModel.Film.Name" class="form-control"></InputText>
+            <ValidationMessage For="()=> GenstandModel.Film.Name"></ValidationMessage>
+        </div>
+        *@
+        @*
+            <div class="form-group">
+            <label class="form-label">Film År</label>
+            <InputNumber @bind-Value="GenstandModel.Film.Year" class="form-control"></InputText>
+            <ValidationMessage For="()=> GenstandsModel.Film.Year" class="form-control"></ValidationMessage>
+        *@
+        @*
+            <div class="form-group">
+            <label class="form-label">Film Genre</label>
+            <InputText @bind-Value="GenstandModel.Film.Genre" class="form-control"></InputText>
+            <ValidationMessage For="()=> GenstandsModel.Film.Genre" class="form-control"></ValidationMessage>
+        *@
+        @*
+            <div class="form-group">
+            <label class="form-label">Fida Link</label>
+            <InputNumber @bind-Value="GenstandModel.Film.Link" class="form-control"></InputText>
+            <ValidationMessage For="()=> GenstandsModel.Film.Link" class="form-control"></ValidationMessage>
+        *@
+
+
+        
+       
+        
 
        
         

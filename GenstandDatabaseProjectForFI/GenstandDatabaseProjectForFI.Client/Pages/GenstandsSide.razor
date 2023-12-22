@@ -8,9 +8,9 @@
 
 
 <div class="page-container">
-    <div class="back-button">
-        <button @onclick="(e) => GoBack(e)">← Back</button>
-    </div>
+    <NavLink class="back-button">
+        <button href="genstand-list">← Back</button>
+    </NavLink>
 
     @if (genstand != null)
     {
