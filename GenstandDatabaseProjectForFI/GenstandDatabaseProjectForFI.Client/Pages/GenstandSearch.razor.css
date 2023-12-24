@@ -1,0 +1,21 @@
+﻿.search-div {
+    /* Adjust the styles as needed */
+    max-width: 480px; /* Example fixed width for mobile responsiveness */
+    margin: auto;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* subtle shadow for depth */
+    border-radius: 0.25rem; /* rounded corners */
+    background-color: #fff; /* a light background */
+}
+
+.form-label {
+    font-weight: 600; /* make labels bold */
+}
+
+.btn-primary {
+    background-color: #0056b3; /* example primary color */
+    border: none;
+}
+
+    .btn-primary:hover {
+        background-color: #004494; /* darker on hover for interaction feedback */
+    }

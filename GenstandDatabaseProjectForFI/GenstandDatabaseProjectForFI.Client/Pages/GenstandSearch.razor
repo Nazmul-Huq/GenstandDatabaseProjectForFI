@@ -1,24 +1,28 @@
 ﻿@page "/genstand-search"
+
 @using SharedLibrary.Dtos
 @inject HttpClient httpClient
+@inject NavigationManager NavigationManager
+
+
 
 @* @rendermode InteractiveAuto *@
 
-<h3>Søg Genstand</h3>
+<h3>Søge side</h3>
+<hr>
 <div class="search-div">
-<EditForm Model="@GenstandSearchDto" OnValidSubmit="@HandleSearch" FormName="searchGenstand">
+    <EditForm Model="@GenstandSearchDto" OnValidSubmit="@HandleSearch" FormName="searchGenstand" class="p-3">
         <DataAnnotationsValidator />
         <ValidationSummary />
 
-    <div class="form-group">
-        <label class="form-label">Søg Genstand Navn</label>
-        <InputText @bind-Value="GenstandSearchDto.SearchText" class="form-control"></InputText>
-        <ValidationMessage For="()=>GenstandSearchDto.SearchText"></ValidationMessage>
-    </div>
-    
-    <br>
-    <button type="submit" class="btn btn-primary">Søg</button>
-</EditForm>
+        <div class="mb-3">
+            <label for="searchText" class="form-label">Søg på en genstand</label>
+            <InputText id="searchText" @bind-Value="GenstandSearchDto.SearchText" class="form-control" placeholder="Indtast navn på genstand"></InputText>
+            <ValidationMessage For="@(() => GenstandSearchDto.SearchText)" class="text-danger" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Søg</button>
+    </EditForm>
 
 </div>
 <br>
@@ -47,7 +51,7 @@
                             <td>@genstand.Description</td>
                             <td class="btn-td">
                                 <div class="hstack gap-3">
-                                    <button class="btn  btn-info btn-extra-small" @onclick="()=>EditGenstand(genstand)"> Edit</button>
+                                    <button type="button" class="btn btn-info btn-extra-small" @onclick="() => EditGenstand(genstand)">Edit</button>
                                     <button class="btn  btn-danger btn-extra-small" @onclick="() => DeleteGenstand(genstand)">Delete</button>
                                     <button class="btn btn-secondary btn-extra-small" @onclick="() => ViewGenstand(genstand)">View</button>
                                 </div>

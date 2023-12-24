@@ -1,5 +1,7 @@
 ﻿@page "/"
 @using SharedLibrary.Models
+@inject Microsoft.AspNetCore.Components.Authorization.AuthenticationStateProvider AuthenticationStateProvider
+
 
 <PageTitle>Startside</PageTitle>
 
@@ -8,32 +10,36 @@
         <div class="home-page-logo">
             <img src="images/Genda Logo.png" alt="Genda Logo" />
         </div>
-
-
-        <div class="search-div">
-            <Editform Model="@SearchModel" onvalidsubmit="@SearchGenstand" formname="searchGenstand">
-                <label for="search">søg</label>
-                <input id="search" type="search" placeholder="søg på en genstand" autofocus required />
-                <button type="submit">søg</button>
-                </Editform>
-        </div>
     </div>
-
 </main>
 
-@code {
-    public SearchModel SearchModel { get; set; }
-    public async Task SearchGenstand()
+
+<div class="container">
+    <div class="card">
+        <h6>Hvem vi er:</h6>
+        <textarea @bind="content1" class="editable-content" readonly="@(!isAuthenticated)"></textarea>
+    </div>
+    <div class="card">
+        <h6>Hvad Applikationen går ud på:</h6>
+        <textarea @bind="content2" class="editable-content" readonly="@(!isAuthenticated)"></textarea>
+    </div>
+    <div class="card">
+        <h6>Hvorfor vi laver Applikationen:</h6>
+        <textarea @bind="content3" class="editable-content" readonly="@(!isAuthenticated)"></textarea>
+    </div>
+</div>
+
+
+@code{
+    string content1 = "Content goes here...";
+    string content2 = "Content goes here...";
+    string content3 = "Content goes here...";
+    bool isAuthenticated = false;
+
+    protected override async Task OnInitializedAsync()
     {
-        // var response = await httpClient.PutAsJsonAsync("api/Genstand/Update-Genstand", SearchModel);
-        // var genstand = await response.Content.ReadFromJsonAsync<SearchModel>();
-        // if (genstand is not null)
-        // {
-        //     SearchModel = new();
-        // }
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        isAuthenticated = user.Identity.IsAuthenticated;
     }
-    // public record SearchModel
-    // {
-    //     public string SearchInput{ get; set; }
-    // }
 }

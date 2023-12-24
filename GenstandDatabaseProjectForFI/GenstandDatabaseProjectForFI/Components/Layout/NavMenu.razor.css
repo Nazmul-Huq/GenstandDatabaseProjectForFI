@@ -173,3 +173,22 @@
     height: 3rem;
     
 }
+
+
+.footer {
+    background-color: #fd7e14; /* Light grey background, change as needed */
+    color: #6c757d; /* Dark grey text, change as needed */
+    text-align: center;
+    padding: 10px 0; /* Smaller padding */
+    position: fixed;
+    bottom: 0;
+    width: 15.6rem;
+    font-size: 0.5rem; /* Smaller font size */
+}
+
+.container p {
+    margin: 0; /* Removes default paragraph margin */
+}
+
+
+
