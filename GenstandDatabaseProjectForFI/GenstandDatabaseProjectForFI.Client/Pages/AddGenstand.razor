@@ -69,20 +69,32 @@
             <ValidationMessage For="()=>GenstandModel.Loan"></ValidationMessage>
         </div>
         
-        @* <div class="form-group">
-        <label class="form-label">Genstands Katergori</label>
-        <InputSelect @bind-Value="GenstandModel.Category" TValue="string" class="form-control"></InputSelect>
-        <ValidationMessage For="()=> GenstandModel.Description" />
-        </div> *@
-
-        @*
-         <div class="form-group">
+        <div class="form-group">
             <label class="form-label">Film Id</label>
-            <InputNumber @bind-Value="GenstandModel.Film.Id" class="form-control"></InputNumber>
-            <ValidationMessage For="()=> GenstandModel.Film.Id"></ValidationMessage>
+            <InputNumber @bind-Value="GenstandModel.FilmId" class="form-control"></InputNumber>
+            <ValidationMessage For="()=> GenstandModel.FilmId"></ValidationMessage>
 
         </div>
+        @*
+        <div class="form-group">
+        <label class="form-label">Genstands Katergori</label>
+        <InputSelect @bind-Value="GenstandModel.Category" TValue="string" class="form-control"></InputSelect>
+        <ValidationMessage For="()=> GenstandModel.Category" />
+        </div> 
+        
+         <div class="form-group">
+            <label class="form-label">Genstands Katergori</label>
+            <InputSelect @bind-Value="GenstandModel.Location" TValue="string" class="form-control"></InputSelect>
+            <ValidationMessage For="()=> GenstandModel.Location" />
+        </div>
         *@
+        
+
+
+        
+
+
+        
         @*
         <div class="form-group">
             <label class="form-label">Film Navn</label>
@@ -125,7 +137,11 @@
     //[SupplyParameterFromForm]
     public Genstand GenstandModel { get; set; } = new();
     [Parameter] public int Id { get; set; }
-    public Genstand GenstandReturn = new();
+    public Genstand GenstandReturn = new(); 
+    public Film FilmReturn = new();
+    private string saveSuccessMessage;
+
+
 
     private async Task HandleSave()
     {
@@ -134,20 +150,32 @@
 
             var response = await httpClient.PutAsJsonAsync("api/Genstand/Update-Genstand", GenstandModel);
             var genstand = await response.Content.ReadFromJsonAsync<Genstand>();
-            if(genstand is not null)
+            if (response.IsSuccessStatusCode)
             {
                 GenstandModel = new();
+                saveSuccessMessage = "Gensstands data updateret successfuldt!";
                 NavigationManager.NavigateTo("genstand-list");
-            }          
+            }
+            else
+            {
+                saveSuccessMessage = "Fejl med at updatere genstands data.";
+            }
 
         }
 
         else
         {
             var response = await httpClient.PostAsJsonAsync("api/Genstand/Add-Genstand", GenstandModel);
-            if (response is null) return;
-            GenstandReturn = await response.Content.ReadFromJsonAsync<Genstand>();
-            GenstandReturn = new();
+            if (response.IsSuccessStatusCode)
+            {
+                GenstandReturn = await response.Content.ReadFromJsonAsync<Genstand>();
+                GenstandModel = new();
+                saveSuccessMessage = "Genstand indsat successfuldt!";
+            }
+            else
+            {
+                saveSuccessMessage = "Fejl i a indsætte Genstand";
+            }
 
         }
 

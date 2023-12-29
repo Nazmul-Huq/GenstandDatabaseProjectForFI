@@ -8,8 +8,8 @@
 
 
 <div class="page-container">
-    <NavLink class="back-button">
-        <button href="genstand-list">← Back</button>
+    <NavLink class="back-button" href="/genstand-list">
+        ← Back
     </NavLink>
 
     @if (genstand != null)
@@ -55,7 +55,12 @@
 
                 <div class="detail">
                     <span class="label">Udlånt:</span>
-                    <span class="value">@genstand.Loan</span>
+                    <span class="value">@UdlantText(genstand.Loan)</span>
+                </div>
+
+                <div class="detail">
+                    <span class="label">Film Id:</span>
+                    <span class="value">@genstand.FilmId</span>
                 </div>
               
             </div>
@@ -103,5 +108,9 @@
         NavigationManager.NavigateTo("/genstand-list");
     }
 
+    private string UdlantText(bool isLoan)
+    {
+        return isLoan ? "Udlånt" : "Ledig";
+    }
 
 }
