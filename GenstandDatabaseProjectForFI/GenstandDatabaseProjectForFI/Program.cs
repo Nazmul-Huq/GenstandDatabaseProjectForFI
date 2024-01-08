@@ -75,4 +75,9 @@ app.MapRazorComponents<App>()
 // Add additional endpoints required by the Identity /Account Razor components.
 app.MapAdditionalIdentityEndpoints();
 
+
+// To generate a developer certificate
+// run 'dotnet dev-certs https'
+// To trust the certificate (Windows and macOS only)
+// run 'dotnet dev-certs https --trust'
 app.Run();

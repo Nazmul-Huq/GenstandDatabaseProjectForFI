@@ -1,6 +1,8 @@
 ﻿@page "/"
 @using SharedLibrary.Models
-@inject Microsoft.AspNetCore.Components.Authorization.AuthenticationStateProvider AuthenticationStateProvider
+@* @inject Microsoft.AspNetCore.Components.Authorization.AuthenticationStateProvider AuthenticationStateProvider *@
+
+@inject HttpClient httpClient
 
 
 <PageTitle>Startside</PageTitle>
@@ -14,32 +16,61 @@
 </main>
 
 
-<div class="container">
-    <div class="card">
-        <h6>Hvem vi er:</h6>
-        <textarea @bind="content1" class="editable-content" readonly="@(!isAuthenticated)"></textarea>
+@if (Genstands.Count > 0)
+{
+    <div class="container">
+    @foreach (var genstand in Genstands)
+    {           
+        <div class="card">
+            @if (String.IsNullOrEmpty(genstand.PhotoReference))
+                {
+                    <img src="/images/defaultgenstand.png" />
+                    
+                } else
+                {
+                    <img src="/images/@genstand.PhotoReference" />
+                }
+                <br />
+            <h4>@genstand.Name</h4>
+            <h6>@genstand.Description</h6>
+                <button class="btn btn-secondary btn-extra-small" @onclick="() => ViewGenstandDetail(genstand)">View</button>
+            </div>        
+    }
     </div>
-    <div class="card">
-        <h6>Hvad Applikationen går ud på:</h6>
-        <textarea @bind="content2" class="editable-content" readonly="@(!isAuthenticated)"></textarea>
-    </div>
-    <div class="card">
-        <h6>Hvorfor vi laver Applikationen:</h6>
-        <textarea @bind="content3" class="editable-content" readonly="@(!isAuthenticated)"></textarea>
-    </div>
-</div>
 
+}
 
 @code{
-    string content1 = "Content goes here...";
-    string content2 = "Content goes here...";
-    string content3 = "Content goes here...";
-    bool isAuthenticated = false;
+    private List<Genstand> Genstands { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
     {
-        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        var user = authState.User;
-        isAuthenticated = user.Identity.IsAuthenticated;
+        var genstands = await httpClient.GetAsync("api/Genstand/Get-All-Genstands");
+        if (genstands is null) return;
+
+        var returnedGenstands = await genstands.Content.ReadFromJsonAsync<List<Genstand>>();
+        if (returnedGenstands is null) return;
+        int count = returnedGenstands.Count();
+        if (count >= 3)
+        {
+            Genstands.Add(returnedGenstands[count - 1]);
+            Genstands.Add(returnedGenstands[count - 2]);
+            Genstands.Add(returnedGenstands[count - 3]);
+        } 
+        if(count == 2)
+        {
+            Genstands.Add(returnedGenstands[count - 1]);
+            Genstands.Add(returnedGenstands[count - 2]);
+        }
+        if (count == 1)
+        {
+            Genstands.Add(returnedGenstands[count - 1]);
+        }
+    }
+
+    private void ViewGenstandDetail(Genstand genstand)
+    {
+        NavigationManager.NavigateTo($"/genstands-side/{genstand.Id}");     
+
     }
 }
