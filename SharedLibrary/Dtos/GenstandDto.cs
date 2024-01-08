@@ -8,6 +8,7 @@ namespace SharedLibrary.Dtos
 {
     public class GenstandDto
     {
+        public int Id { get; set; }
         public string Name { get; set; } 
         public string Description { get; set; } 
         public string PhotoReference { get; set; }

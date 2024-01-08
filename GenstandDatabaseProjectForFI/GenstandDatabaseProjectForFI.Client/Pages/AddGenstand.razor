@@ -75,73 +75,34 @@
             <ValidationMessage For="()=> GenstandModel.FilmId"></ValidationMessage>
 
         </div>
-        @*
-        <div class="form-group">
-        <label class="form-label">Genstands Katergori</label>
-        <InputSelect @bind-Value="GenstandModel.Category" TValue="string" class="form-control"></InputSelect>
-        <ValidationMessage For="()=> GenstandModel.Category" />
-        </div> 
         
-         <div class="form-group">
-            <label class="form-label">Genstands Katergori</label>
-            <InputSelect @bind-Value="GenstandModel.Location" TValue="string" class="form-control"></InputSelect>
-            <ValidationMessage For="()=> GenstandModel.Location" />
-        </div>
-        *@
-        
-
-
-        
-
-
-        
-        @*
-        <div class="form-group">
-            <label class="form-label">Film Navn</label>
-            <InputText @bind-Value="GenstandModel.Film.Name" class="form-control"></InputText>
-            <ValidationMessage For="()=> GenstandModel.Film.Name"></ValidationMessage>
-        </div>
-        *@
-        @*
-            <div class="form-group">
-            <label class="form-label">Film År</label>
-            <InputNumber @bind-Value="GenstandModel.Film.Year" class="form-control"></InputText>
-            <ValidationMessage For="()=> GenstandsModel.Film.Year" class="form-control"></ValidationMessage>
-        *@
-        @*
-            <div class="form-group">
-            <label class="form-label">Film Genre</label>
-            <InputText @bind-Value="GenstandModel.Film.Genre" class="form-control"></InputText>
-            <ValidationMessage For="()=> GenstandsModel.Film.Genre" class="form-control"></ValidationMessage>
-        *@
-        @*
-            <div class="form-group">
-            <label class="form-label">Fida Link</label>
-            <InputNumber @bind-Value="GenstandModel.Film.Link" class="form-control"></InputText>
-            <ValidationMessage For="()=> GenstandsModel.Film.Link" class="form-control"></ValidationMessage>
-        *@
-
-
-        
-       
-        
-
-       
-        
-        
-
         <button type="submit" class="btn btn-primary">Gem</button>
     </EditForm>
 </div>
 @code {
     //[SupplyParameterFromForm]
-    public Genstand GenstandModel { get; set; } = new();
+    public GenstandDto GenstandModel { get; set; } = new();
     [Parameter] public int Id { get; set; }
     public Genstand GenstandReturn = new(); 
     public Film FilmReturn = new();
     private string saveSuccessMessage;
 
+    // private async Task HandleSave()
+    // {
+        
+    //     var response = await httpClient.PostAsJsonAsync("api/Genstand/Add-Genstand", GenstandModel);
+    //     if (response.IsSuccessStatusCode)
+    //     {
+    //         GenstandReturn = await response.Content.ReadFromJsonAsync<Genstand>();
+    //         GenstandModel = new();
+    //         saveSuccessMessage = "Genstand indsat successfuldt!";
+    //     }
+    //     else
+    //     {
+    //         saveSuccessMessage = "Fejl i a indsætte Genstand";
+    //     }
 
+    // }
 
     private async Task HandleSave()
     {
@@ -186,9 +147,11 @@
         if (Id > 0)
         {
             var response = await httpClient.GetAsync($"api/Genstand/Single-Genstand/{Id}");
-            GenstandModel = await response.Content.ReadFromJsonAsync<Genstand>();
+            Genstand ReturnedGenstand = await response.Content.ReadFromJsonAsync<Genstand>();
         }
     }
+
+
      
     
     

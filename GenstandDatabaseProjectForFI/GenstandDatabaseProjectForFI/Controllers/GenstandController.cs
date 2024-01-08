@@ -12,17 +12,40 @@ namespace GenstandDatabaseProjectForFI.Controllers
     public class GenstandController : ControllerBase
     {
         private readonly IGenstandOperations genstandOperations;
-        public GenstandController(IGenstandOperations genstandOperations)
+        private readonly IFilmOperations filmOperations;
+        public GenstandController(IGenstandOperations genstandOperations, IFilmOperations filmOperations)
         {
             this.genstandOperations = genstandOperations;
+            this.filmOperations = filmOperations;
         }
 
         [HttpPost("Add-Genstand")]
-        public async Task<ActionResult<List<Genstand>>> AddProductAsync(Genstand model)
+        public async Task<ActionResult<List<Genstand>>> AddProductAsync(GenstandDto model)
         {
-            var product = await genstandOperations.AddGenstandAsync(model);
-            return Ok(product);
+            if (model == null) return BadRequest(ModelState);
+            Film film = await filmOperations.GetFilmByIdAsync(model.FilmId);
+            Genstand genstandToSave = new Genstand { 
+                Name = model.Name,
+                Description = model.Description,
+                DateOfGenstand = model.DateOfGenstand,
+                Size = model.Size,
+                PhotoReference = model.PhotoReference,
+                Placement = model.Placement,
+                Condition = model.Condition,
+                Loan = model.Loan,
+                //FilmId = model.FilmId,
+                Film = film
+            };
+            var savedGenstand = await genstandOperations.AddGenstandAsync(genstandToSave);
+            return Ok(savedGenstand);
         }
+
+        //[HttpPost("Add-Genstand")]
+        //public async Task<ActionResult<List<Genstand>>> AddProductAsync(Genstand model)
+        //{
+        //    var product = await genstandOperations.AddGenstandAsync(model);
+        //    return Ok(product);
+        //}
 
         [HttpGet("Get-All-Genstands")]
         public async Task<ActionResult<List<Genstand>>> GetAllGenstandsAsync()
