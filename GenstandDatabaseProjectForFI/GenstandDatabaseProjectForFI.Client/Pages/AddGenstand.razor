@@ -11,6 +11,18 @@
 <hr />
 
 <div class="form-container">
+
+    <div class="row">
+        <div class="col-4">
+            <div class="form-group">
+                <label>File</label>
+                <InputFile OnChange="OnChooseFile" />
+                <p>0KB / 9,500KB</p>
+            </div>
+            <button type="button" class="btn btn-success btn-block m-1" @onclick="SubmitFileAsync">Upload</button>
+        </div>
+    </div>
+
     <EditForm Model="@GenstandModel" OnValidSubmit="@HandleSave" FormName="addGenstand">
         <DataAnnotationsValidator />
         <ValidationSummary />
@@ -87,9 +99,15 @@
     public Film FilmReturn = new();
     private string saveSuccessMessage;
 
+    private Stream _fileStream = null;
+    private string _selectedFileName = null;
+    private IBrowserFile? _selectedFile = null;
+    private long _uploaded = 0;
+    private double _percentage = 0;
+
     // private async Task HandleSave()
     // {
-        
+
     //     var response = await httpClient.PostAsJsonAsync("api/Genstand/Add-Genstand", GenstandModel);
     //     if (response.IsSuccessStatusCode)
     //     {
@@ -106,6 +124,8 @@
 
     private async Task HandleSave()
     {
+
+
         if (GenstandModel.Id > 0)
         {
 
@@ -142,12 +162,60 @@
 
     }
 
+    public void OnChooseFile(InputFileChangeEventArgs e)
+    {
+        // Get the selected file
+        //var file = e.File;
+        _selectedFile = e.File;
+
+        // Check if the file is null then return from the method
+        if (_selectedFile == null)
+            return;
+    }
+
+    public async Task SubmitFileAsync()
+    {
+        long maxFileSize = 1024 * 15;
+
+        if (_selectedFile == null)
+            return;
+
+        using var content = new MultipartFormDataContent();
+
+        try
+        {
+            //files.Add(new() { Name = file.Name });
+
+            var fileContent =
+                new StreamContent(_selectedFile.OpenReadStream(maxFileSize));
+
+            fileContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(_selectedFile.ContentType);
+
+            content.Add(
+                content: fileContent,
+                name: "\"files\"",
+                fileName: _selectedFile.Name);
+
+            //upload = true;
+
+        } catch(Exception ex)
+        {
+            
+        }
+        var response = await httpClient.PostAsync("api/Genstand/Add-Image", content);
+        if (response.IsSuccessStatusCode)
+        {
+            Console.WriteLine("ok");
+        }
+    }
+
     protected override async Task OnParametersSetAsync()
     {
         if (Id > 0)
         {
             var response = await httpClient.GetAsync($"api/Genstand/Single-Genstand/{Id}");
-            Genstand ReturnedGenstand = await response.Content.ReadFromJsonAsync<Genstand>();
+            //Genstand ReturnedGenstand = await response.Content.ReadFromJsonAsync<Genstand>();
+            Genstand GenstandModel = await response.Content.ReadFromJsonAsync<Genstand>();
         }
     }
 
