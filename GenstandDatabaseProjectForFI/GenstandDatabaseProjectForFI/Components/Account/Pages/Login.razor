@@ -46,7 +46,7 @@
 
             <div class="form-group">
                 <InputCheckbox @bind-Value="Input.RememberMe" />
-                <label>Remember me</label>
+                <label>Husk mig</label>
             </div>
 
             <button type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
@@ -55,15 +55,15 @@
         <div class="login-links">
             <a href="Account/ForgotPassword" class="styled-link">
                 <i class="bi bi-question-circle-fill"></i>
-                Forgot your password?
+                glemt din kode?
             </a>
             <a href="@(NavigationManager.GetUriWithQueryParameters("Account/Register", new Dictionary<string, object?> { ["ReturnUrl"] = ReturnUrl }))" class="styled-link">
                 <i class="bi bi-person-plus-fill"></i>
-                Register as a new user
+                Registrer som ny bruger
             </a>
             <a href="Account/ResendEmailConfirmation" class="styled-link">
                 <i class="bi bi-envelope-fill"></i>
-                Resend email confirmation
+                send email igen
             </a>
         </div>
 

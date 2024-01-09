@@ -1,0 +1,98 @@
+﻿@page "/category-list"
+
+@rendermode InteractiveAuto
+
+@inject HttpClient httpClient
+@inject NavigationManager NavigationManager
+
+<h3>Kategori Liste</h3>
+<hr />
+
+<div class="container">
+    @if (Categories.Count > 0)
+    {
+
+        <div class="card-body">
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th></th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var category in Categories)
+                    {
+                        <tr>
+                            <td>@category.Id</td>
+                            <td>@category.Name</td>
+                            <td class="btn-td">
+                                <div class="hstack gap-3">
+                                    <button class="btn  btn-danger btn-extra-small" @onclick="() => DeleteCategory(category)">Delete</button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info"> Ingen Genstand Fundet </div>
+    }
+</div>
+
+
+
+@code {
+    private List<Category> Categories { get; set; } = new();
+    private string currentHeading = "Initial heading";
+    private string? newHeading;
+
+
+    private async Task GetAllCategorysAsync()
+    {
+        var categorys = await httpClient.GetAsync("api/Category/Get-All-Categorys");
+        if (categorys is null) return;
+
+        if (!categorys.IsSuccessStatusCode)
+        {
+            // Handle non-success status code
+            // You can log the status code or display an error message to the user
+            return;
+        }
+
+        var contentType = categorys.Content.Headers.ContentType?.MediaType;
+        if (contentType != "application/json")
+        {
+            // Handle invalid content type
+            // You can log the content type or display an error message to the user
+            return;
+        }
+
+        var returnedCategorys = await categorys.Content.ReadFromJsonAsync<List<Category>>();
+        if (returnedCategorys is null) return;
+
+        returnedCategorys.ForEach(g => Categories.Add(g));
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetAllCategorysAsync();
+    }
+
+    private async Task DeleteCategory(Category category)
+    {
+        if (!await IJSRuntime.InvokeAsync<bool>("confirm", $"Er du sikker på at du vill slette\n Id:  {category.Id} \n Adresse: {category.Name} \n"))
+            return;
+        var categoryToDelete = await httpClient.DeleteAsync($"api/Category/Delete-category/{category.Id}");
+        var response = await categoryToDelete.Content.ReadFromJsonAsync<Category>();
+        Categories?.Clear();
+        await GetAllCategorysAsync();
+        //return response!;
+    }
+
+}

@@ -22,6 +22,19 @@ namespace GenstandDatabaseProjectForFI.Data
                 .WithOne(f => f.Film)
                 .HasForeignKey("FilmId") // EF core will create a column name "FilmId" automatically in the Genstands table
                 .IsRequired(false);
+
+
+            modelBuilder.Entity<Category>()
+                   .HasMany<Genstand>(G => G.Genstands)
+                   .WithOne(c => c.Category)
+                   .HasForeignKey("CategoryId") // EF core vil automatisk oprette en kolonne "FilmId" i Genstands tabellen
+                   .IsRequired(false);
+
+            modelBuilder.Entity<Location>()
+                   .HasMany<Genstand>(G => G.Genstands)
+                   .WithOne(l => l.Location)
+                   .HasForeignKey("LocationId") // EF core vil automatisk oprette en kolonne "LocationId" i Genstands tabellen
+                   .IsRequired(false);
         }
     }
 }

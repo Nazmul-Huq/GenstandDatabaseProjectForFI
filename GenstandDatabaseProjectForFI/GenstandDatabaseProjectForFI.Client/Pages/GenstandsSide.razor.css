@@ -52,26 +52,8 @@
     width: 100%; /* Ensure full width */
 }
 
-.back-button {
-    display: inline-block;
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    color: #007bff;
-    text-align: center;
-    text-decoration: none;
-    background-color: transparent;
-    border: 1px solid transparent;
-    border-radius: 0.25rem;
-    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
-}
 
-    .back-button:hover, .back-button:focus {
-        color: #0056b3;
-        background-color: #e9ecef;
-        border-color: #dee2e6;
-        text-decoration: none;
-        cursor: pointer;
-    }
+
 
 .content-container {
     display: flex;

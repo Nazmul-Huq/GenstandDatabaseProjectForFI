@@ -8,8 +8,17 @@ namespace SharedLibrary.Models
 {
     public class Location
     {
+
+
         public int Id { get; set; }
 
-        public string Column { get; set; }
+        //[Required]
+        public string Address { get; set; } //= string.Empty;
+
+
+
+
+        public ICollection<Genstand> Genstands { get; set; } = new HashSet<Genstand>();
+
     }
 }

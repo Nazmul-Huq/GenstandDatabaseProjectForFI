@@ -23,13 +23,17 @@ namespace SharedLibrary.Models
 
         public bool Loan { get; set; }
 
-        //public string Category { get; set; }
+       // public int? CategoryId { get; set; }
 
-       public int? FilmId { get; set; }
+        public Category Category { get; set; }
+
+        //public int? FilmId { get; set; }
 
         public Film Film { get; set; }
 
-        //public string Location { get; set; }
+        //public int? LocationId { get; set; }
+
+        public Location Location { get; set; }
 
     }
 }
