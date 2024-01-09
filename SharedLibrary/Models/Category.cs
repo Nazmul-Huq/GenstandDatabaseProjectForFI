@@ -11,5 +11,8 @@ namespace SharedLibrary.Models
         public int Id { get; set; }
 
         public string Name { get; set; }
+
+        public ICollection<Genstand> Genstands { get; set; } = new HashSet<Genstand>();
+
     }
 }

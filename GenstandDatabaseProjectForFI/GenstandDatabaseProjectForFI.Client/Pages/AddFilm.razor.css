@@ -52,3 +52,9 @@ input[type="file"] {
     margin-top:2rem;
     margin-bottom: 1rem;
 }
+
+@media (max-width: 768px) { /* Adjust the max width as needed for your breakpoint */
+    .content {
+        padding: 1em; /* Add some padding on mobile for better readability */
+    }
+}

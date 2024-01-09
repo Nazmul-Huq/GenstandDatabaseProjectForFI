@@ -1,0 +1,78 @@
+﻿@page "/add-location"
+
+@rendermode InteractiveAuto
+
+
+@using SharedLibrary.Models
+
+@inject HttpClient httpClient
+@inject NavigationManager NavigationManager
+
+@if (!string.IsNullOrEmpty(saveSuccessMessage))
+{
+    <div class="alert alert-succes">
+        @saveSuccessMessage
+    </div>
+}
+
+<div class="form-container">
+    <EditForm Model="@LocationModel" OnValidSubmit="@HandleSave" FormName="addLocation">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="form-group">
+            <label class="form-label">Address</label>
+            <InputText @bind-Value="LocationModel.Address" class="form-control"></InputText>
+            <ValidationMessage For="()=>LocationModel.Address"></ValidationMessage>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Gem</button>
+    </EditForm>
+</div>
+
+@code {
+    //[SupplyParameterFromForm]
+    public Location LocationModel { get; set; } = new();
+    [Parameter] public int Id { get; set; }
+    private string saveSuccessMessage;
+    public Location LocationReturn = new();
+
+
+    private async Task HandleSave()
+    {
+        if (LocationModel.Id > 0)
+        {
+
+            var response = await httpClient.PutAsJsonAsync("api/Location/Update-Location", LocationModel);
+            var genstand = await response.Content.ReadFromJsonAsync<Location>();
+            if (response.IsSuccessStatusCode)
+            {
+                LocationModel = new();
+                saveSuccessMessage = "Location data updateret successfuldt!";
+                NavigationManager.NavigateTo("location-list");
+            }
+            else
+            {
+                saveSuccessMessage = "Fejl med at updatere location data.";
+            }
+
+        }
+
+        else
+        {
+            var response = await httpClient.PostAsJsonAsync("api/Location/Add-Location", LocationModel);
+            if (response.IsSuccessStatusCode)
+            {
+                LocationReturn = await response.Content.ReadFromJsonAsync<Location>();
+                LocationModel = new();
+                saveSuccessMessage = "Location indsat successfuldt!";
+            }
+            else
+            {
+                saveSuccessMessage = "Fejl i a indsætte Location";
+            }
+
+        }
+
+    }
+}

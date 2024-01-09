@@ -1,0 +1,106 @@
+﻿@page "/location-list"
+
+@rendermode InteractiveAuto
+
+@inject HttpClient httpClient
+@inject NavigationManager NavigationManager
+
+<h3>Tilføj Location</h3>
+<hr />
+
+<div class="container">
+    @if (Locations.Count > 0)
+    {
+
+        <div class="card-body">
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Adresse</th>
+                        <th></th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var location in Locations)
+                    {
+                        <tr>
+                            <td>@location.Id</td>
+                            <td>@location.Address</td>
+                            <td class="btn-td">
+                                <div class="hstack gap-3">
+                                    <button class="btn  btn-info btn-extra-small" @onclick="()=>EditGenstand(location)"> Edit</button>
+                                    <button class="btn  btn-danger btn-extra-small" @onclick="() => DeleteGenstand(location)">Delete</button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info"> Ingen Genstand Fundet </div>
+    }
+</div>
+
+
+
+@code {
+    private List<Location> Locations { get; set; } = new();
+    private string currentHeading = "Initial heading";
+    private string? newHeading;
+
+
+    private async Task GetAllLocationsAsync()
+    {
+        var locations = await httpClient.GetAsync("api/Location/Get-All-Locations");
+        if (locations is null) return;
+
+        if (!locations.IsSuccessStatusCode)
+        {
+            // Handle non-success status code
+            // You can log the status code or display an error message to the user
+            return;
+        }
+
+        var contentType = locations.Content.Headers.ContentType?.MediaType;
+        if (contentType != "application/json")
+        {
+            // Handle invalid content type
+            // You can log the content type or display an error message to the user
+            return;
+        }
+
+        var returnedLocations = await locations.Content.ReadFromJsonAsync<List<Location>>();
+        if (returnedLocations is null) return;
+
+        returnedLocations.ForEach(g => Locations.Add(g));
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetAllLocationsAsync();
+    }
+
+
+
+    private void EditGenstand(Location location)
+    {
+        NavigationManager.NavigateTo($"add-location/{location.Id}");
+    }
+
+    private async Task DeleteGenstand(Location location)
+    {
+        if (!await IJSRuntime.InvokeAsync<bool>("confirm", $"Er du sikker på at du vill slette\n Id:  {location.Id} \n Adresse: {location.Address} \n"))
+            return;
+        var locationToDelete = await httpClient.DeleteAsync($"api/Location/Delete-Location/{location.Id}");
+        var response = await locationToDelete.Content.ReadFromJsonAsync<Location>();
+        Locations?.Clear();
+        await GetAllLocationsAsync();
+        //return response!;
+    }
+
+}

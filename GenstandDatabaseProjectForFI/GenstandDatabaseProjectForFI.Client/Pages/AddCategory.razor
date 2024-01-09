@@ -1,0 +1,75 @@
+﻿@page "/add-category"
+
+@rendermode InteractiveAuto
+
+
+<h3>Tilføj Kategori</h3>
+<hr />
+
+
+@if (!string.IsNullOrEmpty(saveSuccessMessage))
+{
+    <div class="alert alert-succes">
+        @saveSuccessMessage
+    </div>
+}
+
+
+<div class="form-container">
+    <EditForm Model="@CategoryModel" OnValidSubmit="@HandleSave" FormName="addCategory">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="form-group">
+            <label class="form-label">Category</label>
+            <InputText @bind-Value="CategoryModel.Name" class="form-control"></InputText>
+            <ValidationMessage For="()=>CategoryModel.Name"></ValidationMessage>
+        </div>
+        
+
+        <button type="submit" class="btn btn-primary">Gem</button>
+    </EditForm>
+</div>
+
+
+
+@code{
+    //[SupplyParameterFromForm]
+    public Category CategoryModel { get; set; } = new();
+    [Parameter] public int Id { get; set; }
+    public Category CategoryReturn = new();
+    private string saveSuccessMessage;
+
+    private async Task HandleSave()
+    {
+        if (CategoryModel.Id > 0)
+        {
+            var response = await httpClient.PutAsJsonAsync("api/Category/Update-Category", CategoryModel);
+            var category = await response.Content.ReadFromJsonAsync<Category>();
+            if (response.IsSuccessStatusCode)
+            {
+                CategoryModel = new();
+                saveSuccessMessage = "Category data updated successfully!";
+                NavigationManager.NavigateTo("Category-list");
+            }
+            else
+            {
+                saveSuccessMessage = "Category to update film data.";
+            }
+        }
+        else
+        {
+            var response = await httpClient.PostAsJsonAsync("api/Category/Add-Category", CategoryModel);
+            if (response.IsSuccessStatusCode)
+            {
+                CategoryReturn = await response.Content.ReadFromJsonAsync<Category>();
+                CategoryModel = new();
+                saveSuccessMessage = "Category added successfully!";
+            }
+            else
+            {
+                saveSuccessMessage = "Failed to add Category.";
+            }
+        }
+    }
+}

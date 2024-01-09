@@ -30,6 +30,9 @@ builder.Services.AddAuthentication(options =>
     .AddIdentityCookies();
 builder.Services.AddScoped<IGenstandOperations, GenstandRepository>();
 builder.Services.AddScoped<IFilmOperations, FilmRepository>();
+builder.Services.AddScoped<ICategoryOperations, CategoryRepository>();
+builder.Services.AddScoped<ILocationOperations, LocationRepository>();
+
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
