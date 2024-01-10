@@ -214,8 +214,15 @@
         if (Id > 0)
         {
             var response = await httpClient.GetAsync($"api/Genstand/Single-Genstand/{Id}");
-            //Genstand ReturnedGenstand = await response.Content.ReadFromJsonAsync<Genstand>();
-            Genstand GenstandModel = await response.Content.ReadFromJsonAsync<Genstand>();
+            GenstandReturn = await response.Content.ReadFromJsonAsync<Genstand>();
+            GenstandModel.Name= GenstandReturn.Name;
+            GenstandModel.Description = GenstandReturn.Description;
+            GenstandModel.PhotoReference = GenstandReturn.PhotoReference;
+            GenstandModel.DateOfGenstand = GenstandReturn.DateOfGenstand;
+            GenstandModel.Size = GenstandReturn.Size;
+            GenstandModel.Placement = GenstandReturn.Placement;
+            GenstandModel.Condition = GenstandReturn.Condition;
+            GenstandModel.Loan = GenstandReturn.Loan;
         }
     }
 

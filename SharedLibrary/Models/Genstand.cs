@@ -4,12 +4,11 @@ namespace SharedLibrary.Models
 {
     public class Genstand
     {
-        //[Key]
         public int Id { get; set; }
+        //[Required] // We can marked as required so form validate this automatisk
+        public string Name { get; set; }
         //[Required]
-        public string Name { get; set; } //= string.Empty;
-        //[Required]
-        public string Description { get; set; } //= string.Empty;
+        public string Description { get; set; }
 
         public string PhotoReference { get; set; }
 
@@ -23,15 +22,9 @@ namespace SharedLibrary.Models
 
         public bool Loan { get; set; }
 
-       // public int? CategoryId { get; set; }
-
         public Category Category { get; set; }
 
-        //public int? FilmId { get; set; }
-
         public Film Film { get; set; }
-
-        //public int? LocationId { get; set; }
 
         public Location Location { get; set; }
 

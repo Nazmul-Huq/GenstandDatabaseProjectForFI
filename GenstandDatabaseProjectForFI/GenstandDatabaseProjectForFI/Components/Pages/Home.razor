@@ -3,6 +3,7 @@
 @* @inject Microsoft.AspNetCore.Components.Authorization.AuthenticationStateProvider AuthenticationStateProvider *@
 
 @inject HttpClient httpClient
+@inject NavigationManager NavigationManager
 
 
 <PageTitle>Startside</PageTitle>
@@ -19,24 +20,26 @@
 @if (Genstands.Count > 0)
 {
     <div class="container">
-    @foreach (var genstand in Genstands)
-    {           
-        <div class="card">
-            @if (String.IsNullOrEmpty(genstand.PhotoReference))
-                {
-                    <img src="/images/defaultgenstand.png" />
+        @foreach (var genstand in Genstands)
+        {           
+            <div class="card">
+                @if (String.IsNullOrEmpty(@genstand.PhotoReference))
+                    {
+                        <img src="/images/defaultgenstand.png" />
                     
-                } else
-                {
-                    <img src="/images/@genstand.PhotoReference" />
-                }
-                <br />
-            <h4>@genstand.Name</h4>
-            <h6>@genstand.Description</h6>
-                <button class="btn btn-secondary btn-extra-small" @onclick="() => ViewGenstandDetail(genstand)">View</button>
-            </div>        
-    }
-    </div>
+                    } else
+                    {
+                        <img src="/images/@genstand.PhotoReference" />
+                    }
+                    <br />
+                <h4>@genstand.Name</h4>
+                <h6>@genstand.Description</h6>
+                @* <button class="btn btn-secondary btn-extra-small" @onclick="() => ViewGenstandDetail(genstand)">View</button> *@
+                <button @onclick="() => ViewGenstandDetail(genstand)">View</button>
+            </div>
+            
+        }
+        </div>
 
 }
 
@@ -68,9 +71,9 @@
         }
     }
 
-    private void ViewGenstandDetail(Genstand genstand)
+    public void ViewGenstandDetail(Genstand genstand)
     {
-        NavigationManager.NavigateTo($"/genstands-side/{genstand.Id}");     
+        NavigationManager.NavigateTo($"/genstands-side/{genstand.Id}");
 
     }
 }

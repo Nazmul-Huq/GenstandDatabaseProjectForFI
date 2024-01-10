@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 
 namespace SharedLibrary.Interfaces
 {
+    // list of operations can be performed on Genstand
+    // Genstand reposity must implement this
     public interface IGenstandOperations
     {
         Task<Genstand> AddGenstandAsync(Genstand model);

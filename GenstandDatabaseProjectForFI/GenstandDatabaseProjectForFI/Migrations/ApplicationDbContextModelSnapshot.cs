@@ -315,13 +315,15 @@ namespace GenstandDatabaseProjectForFI.Migrations
                         .WithMany("Genstands")
                         .HasForeignKey("FilmId");
 
-                    b.HasOne("SharedLibrary.Models.Location", null)
+                    b.HasOne("SharedLibrary.Models.Location", "Location")
                         .WithMany("Genstands")
                         .HasForeignKey("LocationId");
 
                     b.Navigation("Category");
 
                     b.Navigation("Film");
+
+                    b.Navigation("Location");
                 });
 
             modelBuilder.Entity("SharedLibrary.Models.Category", b =>

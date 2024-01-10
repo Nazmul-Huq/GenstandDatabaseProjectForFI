@@ -78,8 +78,15 @@
             <!--image place-->
             <div class="image-container">
                 <div class="detail">
-                    <span class="label">Billede:</span>
-                    <span class="image-value">@genstand.PhotoReference</span>
+                    @if (String.IsNullOrEmpty(genstand.PhotoReference))
+                    {
+                        <img src="/images/defaultgenstand.png" />
+
+                    }
+                    else
+                    {
+                        <img src="/images/@genstand.PhotoReference" />
+                    }
                 </div>
             </div>
 

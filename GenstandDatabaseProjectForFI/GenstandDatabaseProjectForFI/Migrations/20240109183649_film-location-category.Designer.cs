@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GenstandDatabaseProjectForFI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231229110051_AddFilmIdToGenstand")]
-    partial class AddFilmIdToGenstand
+    [Migration("20240109183649_film-location-category")]
+    partial class filmlocationcategory
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -242,6 +242,9 @@ namespace GenstandDatabaseProjectForFI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("CategoryId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Condition")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -258,6 +261,9 @@ namespace GenstandDatabaseProjectForFI.Migrations
 
                     b.Property<bool>("Loan")
                         .HasColumnType("bit");
+
+                    b.Property<int?>("LocationId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -276,7 +282,11 @@ namespace GenstandDatabaseProjectForFI.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
                     b.HasIndex("FilmId");
+
+                    b.HasIndex("LocationId");
 
                     b.ToTable("Genstands");
                 });
@@ -289,7 +299,7 @@ namespace GenstandDatabaseProjectForFI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Column")
+                    b.Property<string>("Address")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -300,14 +310,36 @@ namespace GenstandDatabaseProjectForFI.Migrations
 
             modelBuilder.Entity("SharedLibrary.Models.Genstand", b =>
                 {
+                    b.HasOne("SharedLibrary.Models.Category", "Category")
+                        .WithMany("Genstands")
+                        .HasForeignKey("CategoryId");
+
                     b.HasOne("SharedLibrary.Models.Film", "Film")
                         .WithMany("Genstands")
                         .HasForeignKey("FilmId");
 
+                    b.HasOne("SharedLibrary.Models.Location", "Location")
+                        .WithMany("Genstands")
+                        .HasForeignKey("LocationId");
+
+                    b.Navigation("Category");
+
                     b.Navigation("Film");
+
+                    b.Navigation("Location");
+                });
+
+            modelBuilder.Entity("SharedLibrary.Models.Category", b =>
+                {
+                    b.Navigation("Genstands");
                 });
 
             modelBuilder.Entity("SharedLibrary.Models.Film", b =>
+                {
+                    b.Navigation("Genstands");
+                });
+
+            modelBuilder.Entity("SharedLibrary.Models.Location", b =>
                 {
                     b.Navigation("Genstands");
                 });

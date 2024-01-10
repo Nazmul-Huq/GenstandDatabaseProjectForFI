@@ -16,9 +16,12 @@ namespace GenstandDatabaseProjectForFI.Repositories
         {
             this.applicationDbContext = applicationDbContext;
         }
+        
+        // add a genstand to the databse
         public async Task<Genstand> AddGenstandAsync(Genstand model)
         {
             if (model is null) return null!;
+            // missing some validation
             //var chk = await applicationDbContext.Genstands.Where(g => g.Name.ToLower().Equals(model.Name.ToLower())).FirstOrDefaultAsync();
             //if (chk is not null) return null!;
 
@@ -27,6 +30,7 @@ namespace GenstandDatabaseProjectForFI.Repositories
             return newDataAdded;
         }
 
+        // delete genstand based on id
         public async Task<Genstand> DeleteGenstandAsync(int genstandId)
         {
             var genstand = await applicationDbContext.Genstands.FirstOrDefaultAsync(g => g.Id == genstandId);
@@ -36,6 +40,7 @@ namespace GenstandDatabaseProjectForFI.Repositories
             return genstand;
         }
 
+        // get all genstand from database
         public async Task<List<Genstand>> GetAllGenstandsAsync()
         {
             var genstands = await applicationDbContext.Genstands.ToListAsync();
@@ -43,13 +48,16 @@ namespace GenstandDatabaseProjectForFI.Repositories
             return genstands;
         }
 
+        // get individual genstand by id
         public async Task<Genstand> GetGenstandByIdAsync(int genstandId)
         {
             var genstand = await applicationDbContext.Genstands.FirstOrDefaultAsync(g => g.Id == genstandId);
             if (genstand is null) return null!;
+            var film = await applicationDbContext.Genstands.Entry(film).ReloadAsync();
             return genstand;
         }
 
+        // search genstand based on search text
         public async Task<List<Genstand>> SearchGenstandByNameAsync(string SearchText)
         {
             if (SearchText == null) return null!;
@@ -57,7 +65,8 @@ namespace GenstandDatabaseProjectForFI.Repositories
             if (genstands is null) return null;
             return genstands;
         }
-
+        
+        // update a genstand
         public async Task<Genstand> UpdateGenstandAsync(Genstand model)
         {
             var genstand = await applicationDbContext.Genstands.FirstOrDefaultAsync(g => g.Id == model.Id);

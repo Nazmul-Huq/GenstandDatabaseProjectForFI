@@ -5,7 +5,7 @@
 namespace GenstandDatabaseProjectForFI.Migrations
 {
     /// <inheritdoc />
-    public partial class FixGenstandTable : Migration
+    public partial class filmlocationcategory : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

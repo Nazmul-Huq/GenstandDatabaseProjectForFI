@@ -21,22 +21,25 @@ builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();
 builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
-builder.Services.AddControllers();
+builder.Services.AddControllers(); // we are using controller
 builder.Services.AddAuthentication(options =>
     {
         options.DefaultScheme = IdentityConstants.ApplicationScheme;
         options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
     })
     .AddIdentityCookies();
+
+// add all services
 builder.Services.AddScoped<IGenstandOperations, GenstandRepository>();
 builder.Services.AddScoped<IFilmOperations, FilmRepository>();
 builder.Services.AddScoped<ICategoryOperations, CategoryRepository>();
 builder.Services.AddScoped<ILocationOperations, LocationRepository>();
 
-
+// get database connection and make connection
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -79,8 +82,8 @@ app.MapRazorComponents<App>()
 app.MapAdditionalIdentityEndpoints();
 
 
-// To generate a developer certificate
-// run 'dotnet dev-certs https'
-// To trust the certificate (Windows and macOS only)
-// run 'dotnet dev-certs https --trust'
+// To generate a developer certificate run
+// dotnet dev-certs https
+// To trust the certificate (Windows and macOS only) run
+// dotnet dev-certs https --trust
 app.Run();
