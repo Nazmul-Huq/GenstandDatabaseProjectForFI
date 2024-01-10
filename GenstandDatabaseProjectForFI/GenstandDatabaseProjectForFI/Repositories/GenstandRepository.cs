@@ -53,7 +53,6 @@ namespace GenstandDatabaseProjectForFI.Repositories
         {
             var genstand = await applicationDbContext.Genstands.FirstOrDefaultAsync(g => g.Id == genstandId);
             if (genstand is null) return null!;
-            var film = await applicationDbContext.Genstands.Entry(film).ReloadAsync();
             return genstand;
         }
 
