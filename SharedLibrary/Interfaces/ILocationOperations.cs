@@ -9,6 +9,7 @@ using SharedLibrary.Dtos;
 
 namespace SharedLibrary.Interfaces
 {
+    // actions can performed on location
     public interface ILocationOperations
     {
         Task<Location> AddLocationAsync(Location model);

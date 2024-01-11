@@ -1,6 +1,6 @@
 ﻿@page "/add-genstand"
 @page "/add-genstand/{Id:int}"
-
+@inject NavigationManager NavigationManager
 @rendermode InteractiveAuto
 
 @* @attribute [Authorize] *@
@@ -25,13 +25,7 @@
 
     <EditForm Model="@GenstandModel" OnValidSubmit="@HandleSave" FormName="addGenstand">
         <DataAnnotationsValidator />
-        <ValidationSummary />
-
-        <div class="form-group" id="genstandsimage">
-            <label class="form-label">Billede</label>
-            
-        </div>
-        
+        <ValidationSummary />     
         
         <div class="form-group">
             <label class="form-label">Genstands Navn</label>
@@ -85,7 +79,18 @@
             <label class="form-label">Film Id</label>
             <InputNumber @bind-Value="GenstandModel.FilmId" class="form-control"></InputNumber>
             <ValidationMessage For="()=> GenstandModel.FilmId"></ValidationMessage>
+        </div>
 
+        <div class="form-group">
+            <label class="form-label">Lokation Id</label>
+            <InputNumber @bind-Value="GenstandModel.LocationId" class="form-control"></InputNumber>
+            <ValidationMessage For="()=> GenstandModel.LocationId"></ValidationMessage>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Kategory Id</label>
+            <InputNumber @bind-Value="GenstandModel.CategoryId" class="form-control"></InputNumber>
+            <ValidationMessage For="()=> GenstandModel.CategoryId"></ValidationMessage>
         </div>
         
         <button type="submit" class="btn btn-primary">Gem</button>
@@ -95,7 +100,7 @@
     //[SupplyParameterFromForm]
     public GenstandDto GenstandModel { get; set; } = new();
     [Parameter] public int Id { get; set; }
-    public Genstand GenstandReturn = new(); 
+    public GenstandDto GenstandReturn = new();
     public Film FilmReturn = new();
     private string saveSuccessMessage;
 
@@ -105,27 +110,10 @@
     private long _uploaded = 0;
     private double _percentage = 0;
 
-    // private async Task HandleSave()
-    // {
-
-    //     var response = await httpClient.PostAsJsonAsync("api/Genstand/Add-Genstand", GenstandModel);
-    //     if (response.IsSuccessStatusCode)
-    //     {
-    //         GenstandReturn = await response.Content.ReadFromJsonAsync<Genstand>();
-    //         GenstandModel = new();
-    //         saveSuccessMessage = "Genstand indsat successfuldt!";
-    //     }
-    //     else
-    //     {
-    //         saveSuccessMessage = "Fejl i a indsætte Genstand";
-    //     }
-
-    // }
-
     private async Task HandleSave()
     {
 
-
+        // if edititing then genstand has a ID
         if (GenstandModel.Id > 0)
         {
 
@@ -143,15 +131,16 @@
             }
 
         }
-
-        else
+        else // add a new genstand
         {
             var response = await httpClient.PostAsJsonAsync("api/Genstand/Add-Genstand", GenstandModel);
             if (response.IsSuccessStatusCode)
             {
-                GenstandReturn = await response.Content.ReadFromJsonAsync<Genstand>();
+                GenstandReturn = await response.Content.ReadFromJsonAsync<GenstandDto>();
                 GenstandModel = new();
                 saveSuccessMessage = "Genstand indsat successfuldt!";
+                RedirectToGenstandListPage(); // redirect to genstand list page
+
             }
             else
             {
@@ -162,10 +151,15 @@
 
     }
 
+    public void RedirectToGenstandListPage()
+    {
+        NavigationManager.NavigateTo("genstand-list");
+    }
+
+    // after choosing file set it to a variable
     public void OnChooseFile(InputFileChangeEventArgs e)
     {
         // Get the selected file
-        //var file = e.File;
         _selectedFile = e.File;
 
         // Check if the file is null then return from the method
@@ -173,6 +167,7 @@
             return;
     }
 
+    // submit a file i.e. an image to the controller
     public async Task SubmitFileAsync()
     {
         long maxFileSize = 1024 * 15;
@@ -184,7 +179,6 @@
 
         try
         {
-            //files.Add(new() { Name = file.Name });
 
             var fileContent =
                 new StreamContent(_selectedFile.OpenReadStream(maxFileSize));
@@ -200,7 +194,7 @@
 
         } catch(Exception ex)
         {
-            
+
         }
         var response = await httpClient.PostAsync("api/Genstand/Add-Image", content);
         if (response.IsSuccessStatusCode)
@@ -209,12 +203,14 @@
         }
     }
 
+    // in case of editing genstand
     protected override async Task OnParametersSetAsync()
     {
         if (Id > 0)
         {
             var response = await httpClient.GetAsync($"api/Genstand/Single-Genstand/{Id}");
-            GenstandReturn = await response.Content.ReadFromJsonAsync<Genstand>();
+            GenstandReturn = await response.Content.ReadFromJsonAsync<GenstandDto>();
+            GenstandModel.Id = GenstandReturn.Id;
             GenstandModel.Name= GenstandReturn.Name;
             GenstandModel.Description = GenstandReturn.Description;
             GenstandModel.PhotoReference = GenstandReturn.PhotoReference;
@@ -223,6 +219,9 @@
             GenstandModel.Placement = GenstandReturn.Placement;
             GenstandModel.Condition = GenstandReturn.Condition;
             GenstandModel.Loan = GenstandReturn.Loan;
+            GenstandModel.FilmId = GenstandReturn.Id;
+           GenstandModel.LocationId = GenstandReturn.Id;
+            GenstandModel.CategoryId = GenstandReturn.Id;
         }
     }
 

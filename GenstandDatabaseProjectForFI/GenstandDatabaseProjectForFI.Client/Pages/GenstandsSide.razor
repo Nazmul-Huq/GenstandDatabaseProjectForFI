@@ -58,16 +58,46 @@
                     <span class="value">@UdlantText(genstand.Loan)</span>
                 </div>
 
-                @if(genstand.Film is not null)
+                @if(genstand.FilmId > 0)
                 {
                     <div class="detail">
                         <span class="label">Film Id:</span>
-                        <span class="value">@genstand.Film.Id</span>
+                        <span class="value">@genstand.FilmId</span>
                     </div>
                 } else
                 {
                     <div class="detail">
                         <span class="label">Film Id:</span>
+                        <span class="value">Ingen</span>
+                    </div>
+                }
+
+                @if (genstand.LocationId > 0)
+                {
+                    <div class="detail">
+                        <span class="label">Lokation Id:</span>
+                        <span class="value">@genstand.LocationId</span>
+                    </div>
+                }
+                else
+                {
+                    <div class="detail">
+                        <span class="label">Location Id:</span>
+                        <span class="value">Ingen</span>
+                    </div>
+                }
+
+                @if (genstand.CategoryId > 0)
+                {
+                    <div class="detail">
+                        <span class="label">Category Id:</span>
+                        <span class="value">@genstand.CategoryId</span>
+                    </div>
+                }
+                else
+                {
+                    <div class="detail">
+                        <span class="label">Category Id:</span>
                         <span class="value">Ingen</span>
                     </div>
                 }
@@ -104,14 +134,14 @@
     [Parameter]
     public int Id { get; set; }
 
-    private Genstand genstand;
+    private GenstandDto genstand;
 
     protected override async Task OnParametersSetAsync()
     {
         var response = await httpClient.GetAsync($"api/Genstand/Single-Genstand/{Id}");
         if (response.IsSuccessStatusCode)
         {
-            genstand = await response.Content.ReadFromJsonAsync<Genstand>();
+            genstand = await response.Content.ReadFromJsonAsync<GenstandDto>();
         }
         else
         {

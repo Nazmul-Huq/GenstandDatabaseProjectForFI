@@ -44,17 +44,19 @@ namespace GenstandDatabaseProjectForFI.Repositories
 
         }
 
-        public Task<Location> GetLocationByIdAsync(int locationId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<Location> GetLocationsByIdAsync(int locationId)
+        public async Task<Location> GetLocationByIdAsync(int locationId)
         {
             var location = await applicationDbContext.Locations.FirstOrDefaultAsync(f => f.Id == locationId);
             if (location is null) return null!;
             return location;
         }
+
+        //public async Task<Location> GetLocationsByIdAsync(int locationId)
+        //{
+        //    var location = await applicationDbContext.Locations.FirstOrDefaultAsync(f => f.Id == locationId);
+        //    if (location is null) return null!;
+        //    return location;
+        //}
 
         public async Task<Location> UpdateLocationAsync(Location model)
         {

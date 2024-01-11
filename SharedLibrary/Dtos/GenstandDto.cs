@@ -18,5 +18,7 @@ namespace SharedLibrary.Dtos
         public string Condition { get; set; }
         public bool Loan { get; set; }    
         public int FilmId { get; set; }
+        public int LocationId { get; set; }
+        public int CategoryId { get; set; }
     }
 }

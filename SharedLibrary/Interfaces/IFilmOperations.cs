@@ -2,6 +2,7 @@
 
 namespace SharedLibrary.Interfaces
 {
+    // actions can performed on film
     public interface IFilmOperations
     {
         Task<Film> AddFilmAsync(Film film);

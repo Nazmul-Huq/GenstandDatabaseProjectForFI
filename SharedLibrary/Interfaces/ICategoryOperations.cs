@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace SharedLibrary.Interfaces
 {
+    // actions can performed on category
     public interface ICategoryOperations
     {
         Task<Category> AddCategoryAsync(Category model);

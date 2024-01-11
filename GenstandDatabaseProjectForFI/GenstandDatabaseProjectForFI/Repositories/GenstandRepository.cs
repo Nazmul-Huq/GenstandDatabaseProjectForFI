@@ -1,10 +1,12 @@
 ﻿using GenstandDatabaseProjectForFI.Data;
 using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
+using Mono.TextTemplating;
 using SharedLibrary.Dtos;
 using SharedLibrary.Interfaces;
 using SharedLibrary.Models;
 using System;
+using System.Drawing;
 using System.Linq;
 
 namespace GenstandDatabaseProjectForFI.Repositories
@@ -53,6 +55,9 @@ namespace GenstandDatabaseProjectForFI.Repositories
         {
             var genstand = await applicationDbContext.Genstands.FirstOrDefaultAsync(g => g.Id == genstandId);
             if (genstand is null) return null!;
+            applicationDbContext.Entry(genstand).Reference(f => f.Film).Load();
+            applicationDbContext.Entry(genstand).Reference(f => f.Category).Load();
+            applicationDbContext.Entry(genstand).Reference(f => f.Location).Load();
             return genstand;
         }
 
@@ -72,8 +77,21 @@ namespace GenstandDatabaseProjectForFI.Repositories
             if (genstand is null) return null!;
             genstand.Name = model.Name;
             genstand.Description = model.Description;
+            genstand.DateOfGenstand = model.DateOfGenstand;
+            genstand.Size = model.Size;
+            genstand.PhotoReference = model.PhotoReference;
+            genstand.Placement = model.Placement;
+            genstand.Condition = model.Condition;
+            genstand.Loan = model.Loan;
+            genstand.Film = model.Film;
+            genstand.Category = model.Category;
+            genstand.Location = model.Location;
             await applicationDbContext.SaveChangesAsync();
-            return await applicationDbContext.Genstands.FirstOrDefaultAsync(g => g.Id == model.Id)!;
+            var updatedGenstand= await applicationDbContext.Genstands.FirstOrDefaultAsync(g => g.Id == model.Id)!;
+            applicationDbContext.Entry(updatedGenstand).Reference(f => f.Film).Load();
+            applicationDbContext.Entry(updatedGenstand).Reference(f => f.Category).Load();
+            applicationDbContext.Entry(updatedGenstand).Reference(f => f.Location).Load();
+            return updatedGenstand;
         }
     }
 }
